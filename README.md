@@ -1,0 +1,2 @@
+# PGX-pipeline
+Farmacogenetics pipeline
