@@ -1,2 +1,2 @@
-# PGX-pipeline
+# PGx-pipeline
 Farmacogenetics pipeline
