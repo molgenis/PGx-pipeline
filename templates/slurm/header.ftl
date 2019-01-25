@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=<#if project??>${project}_</#if>${taskId}
+#SBATCH --job-name=${Project}_${taskId}
 #SBATCH --output=${taskId}.out
 #SBATCH --error=${taskId}.err
 #SBATCH --time=${walltime}
@@ -21,13 +21,21 @@ declare MC_jobScript="${taskId}.sh"
 declare MC_jobScriptSTDERR="${taskId}.err"
 declare MC_jobScriptSTDOUT="${taskId}.out"
 
+#
+# File to indicate failure of a complete workflow in
+# a central location for log files for all projects.
+#
+
+logsDirectory="${logsDir}/${Project}/"
+
 <#noparse>
+runName=$(basename $(cd ../ && pwd ))
+MC_failedFile="${logsDirectory}/${runName}.pipeline.failed"
 
 declare MC_singleSeperatorLine=$(head -c 120 /dev/zero | tr '\0' '-')
 declare MC_doubleSeperatorLine=$(head -c 120 /dev/zero | tr '\0' '=')
 declare MC_tmpFolder='tmpFolder'
 declare MC_tmpFile='tmpFile'
-declare MC_tmpFolderCreated=0
 
 #
 ##
@@ -49,11 +57,13 @@ function errorExitAndCleanUp() {
 	echo "${errorMessage}"
 	echo "${MC_doubleSeperatorLine}"                > ${MC_failedFile}
 	echo "${errorMessage}"                         >> ${MC_failedFile}
+
 	if [ -f "${MC_jobScriptSTDERR}" ]; then
 		echo "${MC_singleSeperatorLine}"           >> ${MC_failedFile}
 		printf "${format}" "${MC_jobScriptSTDERR}" >> ${MC_failedFile}
 		echo "${MC_singleSeperatorLine}"           >> ${MC_failedFile}
 		tail -50 "${MC_jobScriptSTDERR}"           >> ${MC_failedFile}
+		
 	fi
 	if [ -f "${MC_jobScriptSTDOUT}" ]; then
 		echo "${MC_singleSeperatorLine}"           >> ${MC_failedFile}
@@ -62,6 +72,9 @@ function errorExitAndCleanUp() {
 		tail -50 "${MC_jobScriptSTDOUT}"           >> ${MC_failedFile}
 	fi
 	echo "${MC_doubleSeperatorLine}"               >> ${MC_failedFile}
+	if [ -d ${MC_tmpFolder} ]; then
+		rm -rf ${MC_tmpFolder}
+	fi
 }
 
 #
@@ -73,36 +86,29 @@ function errorExitAndCleanUp() {
 #                   when the first argument was a file, MC_tmpFile will be a path to a tmp file inside MC_tmpFolder.
 #
 function makeTmpDir {
-	#
-	# Compile paths.
-	#
-	local originalPath=$1
+	local originalName=$(basename "${1}")
+	if [ ! -z "${2:-}" ]
+	then
+		local intermediatePath="${2}"
+	else
+		</#noparse>local intermediatePath="${intermediateDir}"<#noparse>
+	fi
+
 	local myMD5=$(md5sum ${MC_jobScript})
 	myMD5=${myMD5%% *} # remove everything after the first space character to keep only the MD5 checksum itself.
 	local tmpSubFolder="tmp_${MC_jobScript}_${myMD5}"
-	local dir
-	local base
-	if [[ -d "${originalPath}" ]]; then
-		dir="${originalPath}"
-		base=''
+	
+	### check whether variable $1 is a directory or not
+	if [ -d "${1}" ]
+	then
+		MC_tmpFolder="${intermediatePath}/${tmpSubFolder}/${originalName}"
+		MC_tmpFile="${MC_tmpFolder}"
 	else
-		base=$(basename "${originalPath}")
-		dir=$(dirname "${originalPath}")
+		MC_tmpFolder="${intermediatePath}/${tmpSubFolder}/"
+		MC_tmpFile="$MC_tmpFolder/${originalName}"	
 	fi
-	MC_tmpFolder="${dir}/${tmpSubFolder}/"
-	MC_tmpFile="$MC_tmpFolder/${base}"
-	echo "DEBUG ${MC_jobScript}::makeTmpDir: dir='${dir}';base='${base}';MC_tmpFile='${MC_tmpFile}'"
-	#
-	# Cleanup the previously created tmpFolder first if this script was resubmitted.
-	#
-	if [[ ${MC_tmpFolderCreated} -eq 0 && -d ${MC_tmpFolder} ]]; then
-		rm -rf ${MC_tmpFolder}
-	fi
-	#
-	# (Re-)create tmpFolder.
-	#
-	mkdir -p ${MC_tmpFolder}
-	MC_tmpFolderCreated=1
+	echo "DEBUG ${MC_jobScript}::makeTmpDir: MC_tmpFile='${MC_tmpFile}'"
+	mkdir -p "${MC_tmpFolder}"
 }
 
 trap 'errorExitAndCleanUp HUP  NA $?' HUP
@@ -114,86 +120,10 @@ trap 'errorExitAndCleanUp ERR  $LINENO $?' ERR
 
 touch ${MC_jobScript}.started
 
-# Source getFile, putFile, inputs, alloutputsexist
-include () {
-	if [[ -f "$1" ]]; then
-                source "$1"
-                echo "sourced $1"
-        else
-            	echo "File not found: $1"
-        fi
-}
-getFile()
-{
-        ARGS=($@)
-        NUMBER="${#ARGS[@]}";
-        if [ "$NUMBER" -eq "1" ]
-        then
-            	myFile=${ARGS[0]}
-
-                if test ! -e $myFile;
-                then
-                                echo "WARNING in getFile/putFile: $myFile is missing" 1>&2
-                fi
-
-        else
-            	echo "Example usage: getData \"\$TMPDIR/datadir/myfile.txt\""
-        fi
-}
-
-putFile()
-{
-        `getFile $@`
-}
-
-inputs()
-{
-  for name in $@
-  do
-    if test ! -e $name;
-    then
-      echo "$name is missing" 1>&2
-      exit 1;
-    fi
-  done
-}
-
-outputs()
-{
-  for name in $@
-  do
-    if test -e $name;
-    then
-      echo "skipped"
-      echo "skipped" 1>&2
-      exit 0;
-    else
-      return 0;
-    fi
-  done
-}
-
-alloutputsexist()
-{
-  all_exist=true
-  for name in $@
-  do
-    if test ! -e $name;
-    then
-        all_exist=false
-    fi
-  done
-  if $all_exist;
-  then
-      echo "skipped"
-      echo "skipped" 1>&2
-      sleep 30
-      exit 0;
-  else
-      return 0;
-  fi
-}
-
-
-
 </#noparse>
+
+#
+# When dealing with timing / synchronization issues of large parallel file systems,
+# you can uncomment the sleep statement below to allow for flushing of IO buffers/caches.
+#
+#sleep 10
