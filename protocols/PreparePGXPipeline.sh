@@ -71,14 +71,13 @@ cp "${genScripts}/${Project}.csv" "${resultDir}/${Project}.csv"
 
 cd "${rocketPoint}"
 
-perl "${EBROOTPGXMINUSPIPELINE}/scripts/convertParametersGitToMolgenis.pl" "${PGXMINUSPIPELINE}/parameters_${host}.csv" > "${rocketPoint}/parameters_host_converted.csv"
+perl "${EBROOTPGXMINUSPIPELINE}/scripts/convertParametersGitToMolgenis.pl" "${EBROOTPGXMINUSPIPELINE}/parameters_${host}.csv" > "${rocketPoint}/parameters_host_converted.csv"
 perl "${EBROOTPGXMINUSPIPELINE}/scripts/convertParametersGitToMolgenis.pl" "${EBROOTPGXMINUSPIPELINE}/${pipeline}_parameters.csv" > "${rocketPoint}/parameters_converted.csv"
 
 sh "${EBROOTMOLGENISMINCOMPUTE}/molgenis_compute.sh" \
 -p "${genScripts}/parameters_converted.csv" \
 -p "${genScripts}/parameters_host_converted.csv" \
 -p "${genScripts}/${Project}.csv" \
--p "${EBROOTPGXMINUSPIPELINE}/chromosomes.homo_sapiens.csv" \
 -rundir "${projectJobsDir}" \
 -w "${EBROOTPGXMINUSPIPELINE}/${pipeline}_workflow.csv" \
 --header "${EBROOTPGXMINUSPIPELINE}/templates/slurm/header.ftl" \

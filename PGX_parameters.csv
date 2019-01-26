@@ -20,6 +20,7 @@ tmpTmpdir,${tmpDir}/tmp/
 genScripts,${tmpDir}/generatedscripts/${Project}
 projectRawTmpDataDir,${projectDir}/${Project}/${runid}/rawdata/array/
 intermediateDir,${tmpTmpdir}/${Project}/${runid}/
+arrayFinalReport,${intermediateDir}/
 resultDir,${projectDir}/${Project}/${runid}/results/
 projectDir,${workDir}/${tmpName}/projects/
 projectJobsDir,${projectDir}/${Project}/${runid}/jobs/
