@@ -14,6 +14,8 @@
 #string logsDir
 #string arrayFinalReport
 #list SentrixBarcode_A
+#list SentrixPosition_A
+#list Sample_ID
 
 set -e
 set -u
@@ -30,5 +32,34 @@ python ${EBROOTPGXMINUSPIPELINE}/scripts/gtc_final_report_diagnostics.py "${bpmF
 
 
 
-echo "mv ${tmpArrayFinalReport} ${arrayFinalReport}"
-mv "${tmpArrayFinalReport}" "${arrayFinalReport}"
+samples=()
+count=0
+
+barcodelist=()
+
+n_elements=${Sample_ID[@]}
+max_index=${#Sample_ID[@]}-1
+
+
+for ((samplenumber = 0; samplenumber <= max_index; samplenumber++))
+do
+	barcodelist+=("${Sample_ID[samplenumber]}:${SentrixBarcode_A[samplenumber]}_${SentrixPosition_A[samplenumber]}")
+done
+
+
+for i in ${barcodelist[@]}
+do
+	echo "processing $i"
+	echo "countboven: $count"
+	sampleName=$(echo ${i} | awk 'BEGIN {FS=":"}{print $1}')
+	barcodeCombined=$(echo ${i} | awk 'BEGIN {FS=":"}{print $2}')
+	echo ${sampleName}
+	echo ${barcodeCombined}
+
+	echo "mv ${tmpArrayFinalReport}/concordance_${barcodeCombined}.gtc.txt ${tmpArrayFinalReport}/${sampleName}.txt"
+	mv "${tmpArrayFinalReport}/concordance_${barcodeCombined}.gtc.txt" "${tmpArrayFinalReport}/${sampleName}.txt"
+	mv "${tmpArrayFinalReport}/${sampleName}.txt" "${arrayFinalReport}"
+
+	echo "countonder: $count"
+	count=$((count+1))
+done

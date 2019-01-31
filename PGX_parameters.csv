@@ -20,7 +20,7 @@ tmpTmpdir,${tmpDir}/tmp/
 genScripts,${tmpDir}/generatedscripts/${Project}
 projectRawTmpDataDir,${projectDir}/${Project}/${runid}/rawdata/array/
 intermediateDir,${tmpTmpdir}/${Project}/${runid}/
-arrayFinalReport,${intermediateDir}/
+arrayFinalReport,${intermediateDir}/FinalReport/
 resultDir,${projectDir}/${Project}/${runid}/results/
 projectDir,${workDir}/${tmpName}/projects/
 projectJobsDir,${projectDir}/${Project}/${runid}/jobs/
@@ -30,7 +30,7 @@ IDATtmpDataDir,${workDir}/${tmpName}/rawdata/array/IDAT/
 GTCtmpDataDir,${workDir}/${tmpName}/rawdata/array/GTC/
 ateambotUser,umcg-gap-ateambot
 logsDir,${workDir}/${tmpName}/logs/
-
+projectLogsDir,${logsDir}/${Project}/
 
 vcfDir,${resultDir}/VCF/
 PennCNV_reportDir,${intermediateDir}/PennCNV_reports/

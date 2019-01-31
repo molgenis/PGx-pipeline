@@ -13,6 +13,8 @@
 #string runID
 #string logsDir
 #string perlVersion
+#string projectLogsDir
+#string arrayFinalReport
 
 umask 0007
 
@@ -26,6 +28,8 @@ mkdir -p -m 2770 "${intermediateDir}"
 mkdir -p -m 2770 "${resultDir}"
 mkdir -p -m 2770 "${projectJobsDir}"
 mkdir -p -m 2770 "${projectRawTmpDataDir}"
+mkdir -p -m 2770 "${projectLogsDir}"
+mkdir -p -m 2770 "${arrayFinalReport}"
 
 #Create Symlinks
 
