@@ -15,6 +15,7 @@
 #string perlVersion
 #string projectLogsDir
 #string arrayFinalReport
+#string PlinkDir
 
 umask 0007
 
@@ -30,6 +31,7 @@ mkdir -p -m 2770 "${projectJobsDir}"
 mkdir -p -m 2770 "${projectRawTmpDataDir}"
 mkdir -p -m 2770 "${projectLogsDir}"
 mkdir -p -m 2770 "${arrayFinalReport}"
+mkdir -p -m 2770 "${PlinkDir}"
 
 #Create Symlinks
 
