@@ -84,6 +84,7 @@ sh "${EBROOTMOLGENISMINCOMPUTE}/molgenis_compute.sh" \
 -p "${genScripts}/parameters_converted.csv" \
 -p "${genScripts}/parameters_host_converted.csv" \
 -p "${genScripts}/${Project}.csv" \
+-p "${EBROOTPGXMINUSPIPELINE}/chromosomes.csv" \
 -rundir "${projectJobsDir}" \
 -w "${EBROOTPGXMINUSPIPELINE}/${pipeline}_workflow.csv" \
 --header "${EBROOTPGXMINUSPIPELINE}/templates/slurm/header.ftl" \

@@ -12,9 +12,29 @@
 #string arrayMapFile
 #string Project
 #string logsDir
+#string PLINKVersion2
+#string BEDtoolsVersion
+#string HRCFilterBedFile
+#string HTSlibVersion
+#list chr
 
 set -e
 set -u
+
+#Function to check if array contains value
+array_contains () {
+    local array="$1[@]"
+    local seeking=$2
+    local in=1
+    for element in "${!array-}"; do
+        if [[ "${element}" == "${seeking}" ]]; then
+            in=0
+            break
+        fi
+    done
+    return "${in}"
+}
+
 
 makeTmpDir "${PlinkDir}"
 tmpPlinkDir="${MC_tmpFile}"
@@ -53,6 +73,8 @@ grep -P '^[Y]\s' "${tmpPlinkDir}/${arrayTmpMap}" | sort -k4n >> "${tmpPlinkDir}/
 ##Create .bed and other files (keep sample from sample_list.txt).
 ##Create .bed and other files (keep sample from sample_list.txt).
 
+
+#Create ped and map file
 plink \
 --lfile "${tmpPlinkDir}/${Sample_ID}" \
 --recode \
@@ -60,3 +82,54 @@ plink \
 --out "${tmpPlinkDir}/${Sample_ID}" \
 --keep "${tmpPlinkDir}/${familyList}"
 
+#Convert ped and map files to a VCF file
+
+#Use different version from plink to make the VCF file
+module unload plink
+module load "${PLINKVersion2}"
+module list
+
+##Create genotype VCF for sample
+	plink \
+	--recode vcf-iid \
+	--ped "${tmpPlinkDir}/${Sample_ID}.ped" \
+	--map "${tmpPlinkDir}/${arrayMapFile}" \
+	--out "${tmpPlinkDir}/${Sample_ID}"
+
+
+# Filter VCF file with bed file of SNPs from HRC with a MAF value lower than 0.01 .
+# we want to exclude those SNP's so we use the -v option from bedtools intersect
+
+
+module load "${BEDtoolsVersion}"
+module load "${HTSlibVersion}"
+module list
+
+bedtools intersect -a "${tmpPlinkDir}/${Sample_ID}.vcf" -b "${HRCFilterBedFile}" -v -header >  ${tmpPlinkDir}/${Sample_ID}.filteredMAF.vcf
+
+bgzip -c "${tmpPlinkDir}/${Sample_ID}.filteredMAF.vcf" > "${tmpPlinkDir}/${Sample_ID}.filteredMAF.vcf.gz"
+tabix -p vcf "${tmpPlinkDir}/${Sample_ID}.filteredMAF.vcf.gz"
+
+# Make an VCF per chromosome
+
+chromsomes=()
+
+for chromosome in "${chr[@]}"
+do
+	array_contains chromosomes "${chromosome}" || chromosomes+=("$chromosome")
+done
+
+for chr in ${chromosomes[@]}
+do
+	tabix -h "${tmpPlinkDir}/${Sample_ID}.filteredMAF.vcf.gz" "${chr}" > "${tmpPlinkDir}/chr${chr}_${Sample_ID}.filteredMAF.vcf"
+done
+
+# Convert per chromosome VCF's to .bed , .bim , .fam format PLINK which can be used as phasing input
+
+for chr in ${chromosomes[@]}
+do
+	plink \
+        --vcf "${tmpPlinkDir}/chr${chr}_${Sample_ID}.filteredMAF.vcf" \
+        --make-bed \
+        --out "${tmpPlinkDir}/chr${chr}_${Sample_ID}"
+done
