@@ -58,6 +58,7 @@ do
 
 	echo "mv ${tmpArrayFinalReport}/concordance_${barcodeCombined}.gtc.txt ${tmpArrayFinalReport}/${sampleName}.txt"
 	mv "${tmpArrayFinalReport}/concordance_${barcodeCombined}.gtc.txt" "${tmpArrayFinalReport}/${sampleName}.txt"
+	echo  "mv ${tmpArrayFinalReport}/${sampleName}.txt ${arrayFinalReport}"
 	mv "${tmpArrayFinalReport}/${sampleName}.txt" "${arrayFinalReport}"
 
 	echo "countonder: $count"

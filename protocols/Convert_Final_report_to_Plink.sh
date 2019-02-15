@@ -133,3 +133,17 @@ do
         --make-bed \
         --out "${tmpPlinkDir}/chr${chr}_${Sample_ID}"
 done
+
+
+# Move output to output folder
+
+for chr in ${chromosomes[@]}
+do
+	echo "mv temporaru results from ${tmpPlinkDir} to ${PlinkDir}"
+	mv "${tmpPlinkDir}/chr${chr}_${Sample_ID}.filteredMAF.vcf" "${PlinkDir}"
+	mv "${tmpPlinkDir}/chr${chr}_${Sample_ID}.bed" "${PlinkDir}"
+	mv "${tmpPlinkDir}/chr${chr}_${Sample_ID}.bim" "${PlinkDir}"
+	mv "${tmpPlinkDir}/chr${chr}_${Sample_ID}.fam" "${PlinkDir}"
+
+done
+
