@@ -1,4 +1,4 @@
-#MOLGENIS walltime=02:00:00 mem=2gb ppn=1
+#MOLGENIS walltime=02:00:00 mem=10gb ppn=1
 
 #string ngsUtilsVersion
 #string PLINKVersion
