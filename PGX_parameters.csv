@@ -10,6 +10,9 @@ ngsUtilsVersion,ngs-utils/18.11.1
 PLINKVersion,PLINK/1.07-x86_64
 PLINKVersion2,plink/1.9-foss-2015b 
 BEDtoolsVersion,BEDTools/2.25.0-foss-2015b
+BCFtoolsVersion,BCFtools/1.6-foss-2015b
+
+
 
 #references
 bpmFile,/apps/data/GSAarray/GSAMD-24v1-0_20011747_A5.bpm

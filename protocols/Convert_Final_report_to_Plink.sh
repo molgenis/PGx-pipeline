@@ -16,6 +16,7 @@
 #string BEDtoolsVersion
 #string HRCFilterBedFile
 #string HTSlibVersion
+#string BCFtoolsVersion
 #list chr
 
 set -e
@@ -124,12 +125,22 @@ do
 	tabix -h "${tmpPlinkDir}/${Sample_ID}.filteredMAF.vcf.gz" "${chr}" > "${tmpPlinkDir}/chr${chr}_${Sample_ID}.filteredMAF.vcf"
 done
 
+#Remove duplicate SNP's from the VCF files
+
+module load "${BCFtoolsVersion}"
+
+for chr in ${chromosomes[@]}
+do
+bcftools norm -d any "${tmpPlinkDir}/chr${chr}_${Sample_ID}.filteredMAF.vcf" -O v -o "${tmpPlinkDir}/chr${chr}_${Sample_ID}.filteredMAF_duplicatesRemoved.vcf"
+done
+
+
 # Convert per chromosome VCF's to .bed , .bim , .fam format PLINK which can be used as phasing input
 
 for chr in ${chromosomes[@]}
 do
 	plink \
-        --vcf "${tmpPlinkDir}/chr${chr}_${Sample_ID}.filteredMAF.vcf" \
+        --vcf "${tmpPlinkDir}/chr${chr}_${Sample_ID}.filteredMAF_duplicatesRemoved.vcf" \
         --make-bed \
         --out "${tmpPlinkDir}/chr${chr}_${Sample_ID}"
 done
@@ -140,7 +151,7 @@ done
 for chr in ${chromosomes[@]}
 do
 	echo "mv temporaru results from ${tmpPlinkDir} to ${PlinkDir}"
-	mv "${tmpPlinkDir}/chr${chr}_${Sample_ID}.filteredMAF.vcf" "${PlinkDir}"
+	mv "${tmpPlinkDir}/chr${chr}_${Sample_ID}.filteredMAF_duplicatesRemoved.vcf" "${PlinkDir}"
 	mv "${tmpPlinkDir}/chr${chr}_${Sample_ID}.bed" "${PlinkDir}"
 	mv "${tmpPlinkDir}/chr${chr}_${Sample_ID}.bim" "${PlinkDir}"
 	mv "${tmpPlinkDir}/chr${chr}_${Sample_ID}.fam" "${PlinkDir}"
