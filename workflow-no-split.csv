@@ -1,4 +1,0 @@
-step,protocol,dependencies
-Phasing,./protocols/Phasing.sh,SplitPerChromosome
-Imputation,./protocols/Imputation.sh,Phasing
-MergeOutput,./protocols/MergeOutput.sh,MergeOutput
