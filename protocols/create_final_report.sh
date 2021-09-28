@@ -5,7 +5,7 @@
 #string bpmFile
 #string gtcDataDir
 #string projectRoot
-#string finalReportDir
+#string arrayFinalReport
 #string samplesheet
 #string SentrixBarcode_A
 
@@ -23,4 +23,4 @@ python ${projectRoot}/scripts/gtc_final_report.py \
 --manifest "${bpmFile}" \
 --samplesheet "${samplesheet}" \
 --gtc_directory "${gtcDataDir}/${SentrixBarcode_A}/" \
---output_file "${finalReportDir}/${SentrixBarcode_A}"
+--output_file "${arrayFinalReport}"

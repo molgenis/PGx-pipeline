@@ -12,3 +12,5 @@ shapeitExecutable,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/shapei
 
 #references
 variantsPassedValidation,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/data/passport_generation
+
+arrayFinalReport,${finalReportsDir}/${Project}_${SentrixBarcode_A}_finalreport.txt
