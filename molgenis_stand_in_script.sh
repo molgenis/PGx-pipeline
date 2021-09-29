@@ -23,4 +23,4 @@ source "${parameters}"
 source "params.sh"
 
 echo "Starting..."
-bash ${protocol}
+source ${protocol}
