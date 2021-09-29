@@ -17,7 +17,7 @@ module list
 
 source ${pythonEnvironment}/bin/activate
 
-mkdir -p ${finalReportDir}
+mkdir -p ${finalReportsDir}
 
 python ${projectRoot}/scripts/gtc_final_report.py \
 --manifest "${bpmFile}" \
