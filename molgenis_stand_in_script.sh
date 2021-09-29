@@ -14,5 +14,6 @@
 
 cd "${SLURM_JOB_NAME}_${SLURM_ARRAY_TASK_ID}"
 
+echo ${protocol}
 source "params.sh"
 source "${protocol}"
