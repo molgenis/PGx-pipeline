@@ -15,6 +15,7 @@
 cd "${SLURM_JOB_NAME}_${SLURM_ARRAY_TASK_ID}"
 
 echo "Running the following protocol: ${protocol}"
+source "${parameters}"
 source "params.sh"
 
 echo "Starting..."
