@@ -12,9 +12,9 @@
 # specific for this array index, and pass these also
 # to the protocol of choice
 
-jobdir='${SLURM_JOB_ID}_${SLURM_ARRAY_TASK_ID}'
+jobdir="${SLURM_JOB_ID}_${SLURM_ARRAY_TASK_ID}"
 
-source '${parameters}'
-source '${jobdir}/params.sh'
+source "${parameters}"
+source "${jobdir}/params.sh"
 
-source '${protocol}'
+source "${protocol}"
