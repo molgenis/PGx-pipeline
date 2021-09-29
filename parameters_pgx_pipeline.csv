@@ -1,7 +1,7 @@
 #Tools
 pythonVersion,PythonPlus/3.7.4-foss-2018b-v20.11.1
 pythonEnvironment,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/virtualenv/3.7.4-foss-2018b-v20.11.1
-computeVersion,Molgenis-Compute/v19.01.1-Java-11-LTS
+#computeVersion,Molgenis-Compute/v19.01.1-Java-11-LTS
 #pennCNVVersion,PennCNV/1.0.4-foss-2018b
 optiCallExecutable,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/tss101-opticall-090d8ed4136a/opticall/opticall
 RPlusVersion,RPlus/4.0.3-foss-2018b-v21.01.1
@@ -12,5 +12,4 @@ shapeitExecutable,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/shapei
 
 #references
 variantsPassedValidation,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/data/passport_generation
-
 arrayFinalReport,${finalReportsDir}/${Project}_${SentrixBarcode_A}_finalreport.txt
