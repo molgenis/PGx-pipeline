@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+set -u
+
 # This script bridges the gap between a slurm array job
 # and molgenis protocols. The aim is that this is more
 # transparent and easier to work with than the molgenis
@@ -14,6 +17,7 @@
 
 cd "${SLURM_JOB_NAME}_${SLURM_ARRAY_TASK_ID}"
 
+echo "Sourcing parameters from: ${parameters}"
 echo "Running the following protocol: ${protocol}"
 source "${parameters}"
 source "params.sh"
