@@ -14,7 +14,7 @@
 
 jobdir='${SLURM_JOB_ID}_${SLURM_ARRAY_TASK_ID}'
 
-source '${jobdir}/params.sh'
 source '${parameters}'
+source '${jobdir}/params.sh'
 
 source '${protocol}'
