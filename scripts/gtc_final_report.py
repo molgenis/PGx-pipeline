@@ -155,5 +155,5 @@ with open(args.output_file, "w") as output_handle:
 
             output_handle.write(delim.join(
                 [name, sampleName, str(chrom), str(map_info), str(new_snp), str(ref_strand), str(source_strands),
-                 code2genotype[genotype], Allele[:-1], Allele[1:], str(raw_x), str(raw_y), str(x_norm), str(y_norm),
+                 str(code2genotype[genotype]), Allele[:-1], Allele[1:], str(raw_x), str(raw_y), str(x_norm), str(y_norm),
                  str(BAF), str(logratio), str(genotype_score), ref_strand_genotype, source_strand_genotype]) + "\n")
