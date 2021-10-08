@@ -1,4 +1,5 @@
 #Tools
+molgenisStandInScript,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/PGx-pipeline/molgenis_stand_in_script.sh
 pythonVersion,PythonPlus/3.7.4-foss-2018b-v20.11.1
 pythonEnvironment,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/virtualenv/3.7.4-foss-2018b-v20.11.1
 #computeVersion,Molgenis-Compute/v19.01.1-Java-11-LTS
@@ -12,4 +13,3 @@ shapeitExecutable,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/shapei
 
 #references
 variantsPassedValidation,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/data/passport_generation
-arrayFinalReport,${finalReportsDir}/${Project}_${SentrixBarcode_A}_finalreport.txt
