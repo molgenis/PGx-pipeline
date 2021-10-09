@@ -23,8 +23,8 @@ array_contains () {
     return $in
 }
 
-makeTmpDir "${finalReport}"
-tmpFinalReport="${MC_tmpFile}"
+#makeTmpDir "${finalReport}"
+#tmpFinalReport="${MC_tmpFile}"
 
 INPUTREPORTS=()
 
@@ -39,14 +39,14 @@ for i in "${INPUTREPORTS[@]}"
 do
 	if [[ ${first} == "true" ]]
 	then
-		cat ${i} > ${tmpFinalReport}
+		cat ${i} > ${finalReport}
 		first='false'
 		headerNumber=$(( $(head -30 "${i}" |grep -n "\[Data\]" | grep -Eo '^[^:]+')+2))
 		echo "headerNumber:${headerNumber}"
 	else
-		cat ${i} | tail -n+${headerNumber} >> ${tmpFinalReport}
+		cat ${i} | tail -n+${headerNumber} >> ${finalReport}
 	fi
 done
 
-echo "mv ${tmpFinalReport} ${finalReport}"
-mv "${tmpFinalReport}" "${finalReport}"
+#echo "mv ${tmpFinalReport} ${finalReport}"
+#mv "${tmpFinalReport}" "${finalReport}"
