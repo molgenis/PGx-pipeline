@@ -11,7 +11,6 @@
 module load "${plinkVersion}"
 
 mkdir -p ${correctiveVariantsOutputDir}
-
 for chr in {1..22}
 do
   # First we want to eliminate variants that have a MAF of 5% or lower:
@@ -22,6 +21,6 @@ do
     --geno 0.01 \
     --maf 0.05 \
     --hwe 0.01 \
-    --indep-pairwise "500kb" "5" "0.4"
+    --indep-pairwise 500 5 0.4
 
 done
