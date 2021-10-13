@@ -11,6 +11,9 @@
 module load "${plinkVersion}"
 
 mkdir -p ${correctiveVariantsOutputDir}
+
+'''6\t28477797\t35000000\tHLA\n''' > hla_range.bed
+
 for chr in {1..22}
 do
   # First we want to eliminate variants that have a MAF of 5% or lower:
@@ -21,6 +24,8 @@ do
     --geno 0.01 \
     --maf 0.05 \
     --hwe 0.01 \
+    --exclude 'range' hla_range.bed \
+    --bp-space 100000 \
     --indep-pairwise 500 5 0.4
 
 done
