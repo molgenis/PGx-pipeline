@@ -25,5 +25,5 @@ python ${asterixRoot}/src/main/python/cnvcaller/core.py \
 --bed-file "${cnvBedFile}" \
 stage-data \
 --corrective-variants "${correctiveVariantsOutputDir}/merged.prune.in" \
---final_report_file_path ${arrayFinalReport} \
+--final-report-file-path ${arrayFinalReport} \
 --out "${arrayStagedIntensities}"
