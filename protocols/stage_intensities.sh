@@ -19,10 +19,11 @@ source ${pythonEnvironment}/bin/activate
 
 mkdir -p ${stagedIntensities}
 
-python ${asterixRoot}/src/main/python/cnvcaller/core.py stage-data\
+python ${asterixRoot}/src/main/python/cnvcaller/core.py \
 --bead-pool-manifest "${bpmFile}" \
 --sample-sheet "${samplesheet}" \
 --bed-file "${cnvBedFile}" \
+stage-data \
 --corrective-variants "${correctiveVariantsOutputDir}/merged.prune.in" \
 --final_report_file_path ${arrayFinalReport} \
 --out "${arrayFinalReport}"
