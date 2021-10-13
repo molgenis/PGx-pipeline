@@ -12,7 +12,7 @@ module load "${plinkVersion}"
 
 mkdir -p ${correctiveVariantsOutputDir}
 
-'''6\t28477797\t35000000\tHLA\n''' > hla_range.bed
+echo '''6\t28477797\t35000000\tHLA\n''' > hla_range.bed
 
 for chr in {1..22}
 do
