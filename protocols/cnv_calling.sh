@@ -4,10 +4,8 @@
 #string pythonEnvironment
 #string bpmFile
 #string pipelineRoot
-#string arrayFinalReport
 #string arrayStagedIntensities
 #string samplesheet
-#string SentrixBarcode_A
 
 set -e
 set -u
@@ -17,12 +15,12 @@ module list
 
 source ${pythonEnvironment}/bin/activate
 
-mkdir -p ${stagedIntensities}
+mkdir -p ${cnvOutDir}
 
-python ${asterixRoot}/src/main/python/cnvcaller/core.py data \
+python - correction fit
 --bead-pool-manifest "${bpmFile}" \
 --sample-sheet "${samplesheet}" \
 --bed-file "${cnvBedFile}" \
 --corrective-variants "${correctiveVariantsOutputDir}/merged.prune.in" \
---final-report-file-path ${arrayFinalReport} \
---out "${arrayStagedIntensities}"
+--data ${arrayStagedIntensities[@]} \
+--out "${cnvOutDir}"

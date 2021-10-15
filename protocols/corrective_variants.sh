@@ -16,7 +16,8 @@ echo $'6\t28477797\t35000000\tHLA\n' > hla_range.bed
 
 for chr in {1..22}
 do
-  # First we want to eliminate variants that have a MAF of 5% or lower:
+
+  correctiveVariantFiles+=("${correctiveVariantsOutputDir}/chr_${chr}.prune.in")
 
   plink \
     --bfile ${genotypesDir}/chr_${chr} \
@@ -29,3 +30,5 @@ do
     --indep-pairwise 500 5 0.4
 
 done
+
+cat ${correctiveVariantFiles[@]} > "${correctiveVariantsOutputDir}/merged.prune.in"
