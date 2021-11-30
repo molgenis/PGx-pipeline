@@ -2,14 +2,14 @@
 
 #string chromosomeNumber
 #string genotypesPlinkPrefix
-#string plinkVersion
+#string plink2Version
 #string pgxGenesBed37
 #string genotypesPgxFilteredOutputDir
 
 set -e
 set -u
 
-module load "${plinkVersion}"
+module load "${plink2Version}"
 module list
 
 mkdir -p ${genotypesPgxFilteredOutputDir}
