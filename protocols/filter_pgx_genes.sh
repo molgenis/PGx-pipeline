@@ -14,7 +14,7 @@ module list
 
 mkdir -p ${genotypesPgxFilteredOutputDir}
 
-plink --bfile ${genotypesPlinkPrefix} \
+plink2 --bfile ${genotypesPlinkPrefix} \
 --extract bed1 ${pgxGenesBed37} \
 --make-bed \
 --out ${genotypesPgxFilteredOutputDir}/chr_${chromosomeNumber}
