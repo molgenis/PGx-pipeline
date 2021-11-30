@@ -1,2 +1,2 @@
 # Source all parameters
-awk -F, 'NF && $1!~/^#/ { print $1"='"$2"'"}' ${1}
+awk -F, 'NF && $1!~/^#/ { printf "%s='\''%s'\''\n", $1, $2}' ${1}
