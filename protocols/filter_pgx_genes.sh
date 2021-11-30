@@ -17,4 +17,4 @@ mkdir -p ${genotypesPgxFilteredOutputDir}
 plink2 --bfile ${genotypesPlinkPrefix} \
 --extract bed1 ${pgxGenesBed37} \
 --make-bed \
---out ${genotypesPgxFilteredOutputDir}/chr_${chr}
+--out ${genotypesPgxFilteredOutputDir}/chr_${chromosomeNumber}
