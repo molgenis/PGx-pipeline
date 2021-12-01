@@ -11,10 +11,10 @@ set -e
 set -u
 
 #Load modules
-ml ${plinkVersion}
+module load ${plinkVersion}
 
 #Check modules
-${checkStage}
+module list
 
 printf "%s\n" "${genotypesPgxFilteredArray[@]}" > files_to_merge.txt
 
