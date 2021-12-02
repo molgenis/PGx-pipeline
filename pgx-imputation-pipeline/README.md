@@ -100,3 +100,7 @@ Original pipeline was adjusted to work with 1000G p3 30X WGS reference panel:
 Elements of those original pipelines were adjusted to work with 1000G 30X WGS reference panel and accustomised for eQTLGen consortium analyses:
 
 * Urmo Võsa
+
+Processes are adapted to work on selected bits of the genome:
+
+* Robert Warmerdam
