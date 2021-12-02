@@ -3,7 +3,7 @@
 #string chromosomeNumber
 #string genotypesPlinkPrefix
 #string plink2Version
-#string pgxGenesBed37
+#string pgxGenesBed37Flanked
 #string genotypesPgxFilteredOutputDir
 
 set -e
@@ -15,6 +15,6 @@ module list
 mkdir -p ${genotypesPgxFilteredOutputDir}
 
 plink2 --bfile ${genotypesPlinkPrefix} \
---extract bed1 ${pgxGenesBed37} \
+--extract bed1 ${pgxGenesBed37Flanked} \
 --make-bed \
 --out ${genotypesPgxFilteredOutputDir}/chr_${chromosomeNumber}
