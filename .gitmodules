@@ -1,0 +1,3 @@
+[submodule "eqtlgen-imputation-pipeline"]
+	path = eqtlgen-imputation-pipeline
+	url = https://gitlab.com/eqtlgen-group/eqtlgen-imputation-pipeline
