@@ -15,6 +15,16 @@ shapeitExecutable,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/shapei
 #Data
 pgxGenesBed37,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/validation/pgx-genes_GRCh37.bed
 pgxGenesBed38,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/validation/pgx-genes_GRCh38.bed
+pgxGenesBed37Flanked,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/validation/pgx-genes_GRCh37_1Mb-flanks.bed
+pgxGenesBed38Flanked,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/validation/pgx-genes_GRCh38_1Mb-flanks.bed
 
 #References
 variantsPassedValidation,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/data/passport_generation
+
+#Imputation pipeline
+nextflow_path=[full path to your Nextflow executable]
+reference_path=[full path to your folder with reference files]
+
+input_path=[full path to your input genotype folder]
+output_name=[name of the output files]
+output_path=[name of the output path]
