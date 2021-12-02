@@ -22,9 +22,9 @@ pgxGenesBed38Flanked,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/validatio
 variantsPassedValidation,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/data/passport_generation
 
 #Imputation pipeline
-nextflow_path=[full path to your Nextflow executable]
-reference_path=[full path to your folder with reference files]
+javaVersion=Java/11-LTS
+nextflowPath=/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/nextflow
+imputationPipelineReferencePath=/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/data/processed/eQTGenImputeReferences_ToDrew
 
-input_path=[full path to your input genotype folder]
-output_name=[name of the output files]
-output_path=[name of the output path]
+imputationOutputDir=imputationOutputDir
+outputName=genimpute_phased_imputed

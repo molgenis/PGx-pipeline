@@ -3,11 +3,13 @@
 #string chromosomeNumber
 #string genotypesPlinkPrefix
 #string javaVersion
+#string nextflowPath
 #string pgxGenesBed38
 #string pgxGenesBed38Flanked
 #string genotypesPgxFilteredOutputDir
 #string imputationPipelineReferencePath
 #string imputationOutputDir
+#string outputName
 
 set -e
 set -u
@@ -25,7 +27,7 @@ ${nextflowPath} run ${pipelineRoot}/genimpute/main.nf \
 --minimac_imputation_reference ${imputationPipelineReferencePath}/hg38/imputation/ \
 --range_bed_hg38 ${pgxGenesBed38} \
 --extended_range_bed_hg38 ${pgxGenesBed38Flanked} \
---output_name genimpute_phased_imputed \
+--output_name ${outputName} \
 --outdir ${imputationOutputDir}  \
 --profile slurm \
 -resume
