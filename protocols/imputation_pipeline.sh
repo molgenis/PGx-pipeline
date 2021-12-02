@@ -18,7 +18,7 @@ set -u
 module load ${javaVersion}
 
 # Command
-${nextflowPath} run ${pipelineRoot}/genimpute/main.nf \
+${nextflowPath} run ${pipelineRoot}/pgx-imputation-pipeline/main.nf \
 --bfile ${genotypesPgxFilteredOutputDir}/chr_all \
 --target_ref ${imputationPipelineReferencePath}/hg38/ref_genome_QC/Homo_sapiens.GRCh38.dna.primary_assembly.fa \
 --ref_panel_hg38 ${imputationPipelineReferencePath}/hg38/ref_panel_QC/30x-GRCh38_NoSamplesSorted \
