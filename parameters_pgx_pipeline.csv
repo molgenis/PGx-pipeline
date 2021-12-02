@@ -22,9 +22,7 @@ pgxGenesBed38Flanked,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/validatio
 variantsPassedValidation,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/data/passport_generation
 
 #Imputation pipeline
-javaVersion=Java/11-LTS
-nextflowPath=/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/nextflow
-imputationPipelineReferencePath=/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/data/processed/eQTGenImputeReferences_ToDrew
-
-imputationOutputDir=imputationOutputDir
-outputName=genimpute_phased_imputed
+javaVersion,Java/11-LTS
+nextflowPath,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/nextflow
+imputationPipelineReferencePath,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/data/processed/eQTGenImputeReferences_ToDrew
+outputName,genimpute_phased_imputed
