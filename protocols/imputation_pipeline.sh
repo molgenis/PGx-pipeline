@@ -16,6 +16,7 @@ set -u
 
 # Load required modules
 module load ${javaVersion}
+module load Anaconda3/5.3.0
 
 # Command
 ${nextflowPath} run ${pipelineRoot}/pgx-imputation-pipeline/main.nf \
@@ -25,9 +26,10 @@ ${nextflowPath} run ${pipelineRoot}/pgx-imputation-pipeline/main.nf \
 --eagle_genetic_map ${imputationPipelineReferencePath}/hg38/phasing/genetic_map/genetic_map_hg38_withX.txt.gz \
 --eagle_phasing_reference ${imputationPipelineReferencePath}/hg38/phasing/phasing_reference/ \
 --minimac_imputation_reference ${imputationPipelineReferencePath}/hg38/imputation/ \
+--chain_file ${pipelineRoot}/pgx-imputation-pipeline/data/GRCh37_to_GRCh38.chain \
 --range_bed_hg38 ${pgxGenesBed38} \
 --extended_range_bed_hg38 ${pgxGenesBed38Flanked} \
 --output_name ${outputName} \
 --outdir ${imputationOutputDir}  \
---profile slurm \
+-profile singularity \
 -resume
