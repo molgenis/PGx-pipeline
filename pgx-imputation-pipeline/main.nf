@@ -88,16 +88,15 @@ Channel
 Channel
     .fromPath(params.range_bed_hg38)
     .splitCsv(header: ['chrom', 'start', 'end', 'name'], sep: "\t")
-    .map { row -> tuple(row.chrom, row.start, row.end, row.name) }
     .set { bed_ranges }
 
 Channel
     .fromPath(params.extended_range_bed_hg38)
     .splitCsv(header: ['chrom', 'start_extended', 'end_extended', 'name'], sep: "\t")
-    .map { row -> tuple(row.start_extended, row.end_extended) }
-    .merge ( bed_ranges )
+    .merge ( bed_ranges ) { b, a -> tuple(a.chrom, a.start, a.end, a.name, b.start_extended, b.end_extended) }
     .set { bed_ranges_extended }
 
+print bed_ranges_extended
 
 // Header log info
 log.info """=======================================================
@@ -294,6 +293,8 @@ process split_by_region{
     tuple val(chromosome), val(start), val(end), val(name), val(start_extended), val(end_extended), file("range_${chromosome}_${start_extended}-${end_extended}_${name}.vcf.gz") into individual_ranges
 
     script:
+    println
+
     """
     bcftools view -r ${chromosome}:${start_extended}-${end_extended} ${input_vcf} -Oz -o range_${chromosome}_${start_extended}-${end_extended}_${name}.vcf.gz
     """
