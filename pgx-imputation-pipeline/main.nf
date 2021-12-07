@@ -281,38 +281,31 @@ process calculate_missingness{
     """
 }
 
-process split_by_region{
-    publishDir "${params.outdir}/preimpute/split_range", mode: 'copy',
+process split_by_chr{
+    publishDir "${params.outdir}/preimpute/split_chr", mode: 'copy',
         saveAs: {filename -> if (filename.indexOf(".vcf.gz") > 0) filename else null }
-    
+
     input:
-    file(input_vcf) from split_vcf_input.first()
-    tuple chromosome, start, end, name, start_extended, end_extended from bed_ranges_extended
+    tuple file(input_vcf), file(input_vcf_index) from split_vcf_input
+    each chr from Channel.from(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22)
 
     output:
-    tuple val(chromosome), val(start), val(end), val(name), val(start_extended), val(end_extended), file("range_${chromosome}_${start_extended}-${end_extended}_${name}.vcf.gz") into individual_ranges
+    tuple val(chr), file("chr_${chr}.vcf.gz") into individual_chromosomes
 
     script:
     """
-    echo $chromosome
-    echo $start
-    echo $end
-    echo $name
-    echo $start_extended
-    echo $end_extended
-
-    bcftools view -r ${chromosome}:${start_extended}-${end_extended} ${input_vcf} -Oz -o range_${chromosome}_${start_extended}-${end_extended}_${name}.vcf.gz
+    bcftools view -r ${chr} ${input_vcf} -Oz -o chr_${chr}.vcf.gz
     """
 }
 
 process eagle_prephasing{
     input:
-    tuple chromosome, start, end, name, start_extended, end_extended, file(vcf) from individual_ranges
+    tuple chromosome, file(vcf) from individual_chromosomes
     file genetic_map from genetic_map_ch.collect()
     file phasing_reference from phasing_ref_ch.collect()
 
     output:
-    tuple chromosome, start, end, name, start_extended, end_extended, file("range_${chromosome}_${start_extended}-${end_extended}_${name}.phased.vcf.gz") into phased_vcf_cf
+    tuple chromosome, file("chr${chromosome}.phased.vcf.gz") into phased_vcf_cf
 
     script:
     """
@@ -321,9 +314,7 @@ process eagle_prephasing{
     --vcfRef=chr${chromosome}.bcf \
     --geneticMapFile=${genetic_map} \
     --chrom=${chromosome} \
-    --bpStart=${start_extended} \
-    --bpEnd=${end_extended} \
-    --outPrefix=range_${chromosome}_${start_extended}-${end_extended}_${name}.phased \
+    --outPrefix=chr${chromosome}.phased \
     --numThreads=8
     """
 }
@@ -332,7 +323,7 @@ process minimac_imputation{
     publishDir "${params.outdir}/postimpute/", mode: 'copy', pattern: "*.dose.vcf.gz"
  
     input:
-    tuple chromosome, start, end, name, start_extended, end_extended, file(vcf) from phased_vcf_cf
+    tuple chromosome, file(vcf), start, end, name, start_extended, end_extended from phased_vcf_cf.join(bed_ranges_extended)
     file imputation_reference from imputation_ref_ch.collect()
 
     output:
