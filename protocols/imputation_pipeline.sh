@@ -6,7 +6,7 @@
 #string nextflowPath
 #string pgxGenesBed38
 #string pgxGenesBed38Flanked
-#string concatenatedGenotypesPlinkPrefix
+#string concatenatedGenotypesOutputDir
 #string imputationPipelineReferencePath
 #string imputationOutputDir
 #string outputName
@@ -20,7 +20,7 @@ module load ${javaVersion}
 
 # Command
 ${nextflowPath} run ${pipelineRoot}/pgx-imputation-pipeline/main.nf \
---bfile ${concatenatedGenotypesPlinkPrefix} \
+--bfile ${concatenatedGenotypesOutputDir}/chr_all \
 --target_ref ${imputationPipelineReferencePath}/hg38/ref_genome_QC/Homo_sapiens.GRCh38.dna.primary_assembly.fa \
 --ref_panel_hg38 ${imputationPipelineReferencePath}/hg38/ref_panel_QC/30x-GRCh38_NoSamplesSorted \
 --eagle_genetic_map ${imputationPipelineReferencePath}/hg38/phasing/genetic_map/genetic_map_hg38_withX.txt.gz \
