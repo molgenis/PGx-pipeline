@@ -4,7 +4,7 @@
 ###
 
 #array genotypesPlinkPrefixArray
-#string concatenatedGenotypesPlinkPrefix
+#string concatenatedGenotypesOutputDir
 #string plinkVersion
 
 set -e
@@ -18,5 +18,5 @@ module list
 
 printf "%s\n" "${genotypesPlinkPrefixArray[@]}" > files_to_merge.txt
 
-plink --merge-list files_to_merge.txt --make-bed --out ${concatenatedGenotypesPlinkPrefix}
+plink --merge-list files_to_merge.txt --make-bed --out ${concatenatedGenotypesOutputDir}/chr_all
 
