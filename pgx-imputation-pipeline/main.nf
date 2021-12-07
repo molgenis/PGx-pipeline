@@ -94,9 +94,9 @@ Channel
     .fromPath(params.extended_range_bed_hg38)
     .splitCsv(header: ['chrom', 'start_extended', 'end_extended', 'name'], sep: "\t")
     .merge ( bed_ranges ) { b, a -> tuple(a.chrom, a.start, a.end, a.name, b.start_extended, b.end_extended) }
-    .set { bed_ranges_extended }
+    .view ()
+    .into { bed_ranges_extended }
 
-print bed_ranges_extended
 
 // Header log info
 log.info """=======================================================
@@ -286,16 +286,21 @@ process split_by_region{
         saveAs: {filename -> if (filename.indexOf(".vcf.gz") > 0) filename else null }
     
     input:
-    tuple file(input_vcf), file(input_vcf_index) from split_vcf_input
+    file(input_vcf) from split_vcf_input.first()
     tuple chromosome, start, end, name, start_extended, end_extended from bed_ranges_extended
 
     output:
     tuple val(chromosome), val(start), val(end), val(name), val(start_extended), val(end_extended), file("range_${chromosome}_${start_extended}-${end_extended}_${name}.vcf.gz") into individual_ranges
 
     script:
-    println
-
     """
+    echo $chromosome
+    echo $start
+    echo $end
+    echo $name
+    echo $start_extended
+    echo $end_extended
+
     bcftools view -r ${chromosome}:${start_extended}-${end_extended} ${input_vcf} -Oz -o range_${chromosome}_${start_extended}-${end_extended}_${name}.vcf.gz
     """
 }
@@ -334,8 +339,8 @@ process minimac_imputation{
     tuple chromosome, start, end, name, start_extended, end_extended, file("range_${chromosome}_${start}-${end}_${name}.dose.vcf.gz") into imputed_vcf_cf
 
     script:
-    flank_size = start - start_extended
-    flank_size_alternative = end_extended - end
+    flank_size = start.toInteger() - start_extended.toInteger()
+    flank_size_alternative = end_extended.toInteger() - end.toInteger()
 
     if ( flank_size < flank_size_alternative ) {
         flank_size = flank_size_alternative
