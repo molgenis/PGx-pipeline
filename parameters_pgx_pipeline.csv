@@ -12,12 +12,6 @@ htslibVersion,HTSlib/1.11-GCCcore-7.3.0
 boostVersion,Boost/1.67.0-foss-2018b
 shapeitExecutable,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/shapeit4-4.2.1/bin/shapeit4.2
 
-#Data
-pgxGenesBed37,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/validation/pgx-genes_GRCh37.bed
-pgxGenesBed38,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/validation/pgx-genes_GRCh38.bed
-pgxGenesBed37Flanked,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/validation/pgx-genes_GRCh37_1Mb-flanks.bed
-pgxGenesBed38Flanked,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/validation/pgx-genes_GRCh38_1Mb-flanks.bed
-
 #References
 variantsPassedValidation,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/data/passport_generation
 
