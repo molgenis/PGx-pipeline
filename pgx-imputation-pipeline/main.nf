@@ -95,7 +95,9 @@ Channel
     .splitCsv(header: ['chrom', 'start_extended', 'end_extended', 'name'], sep: "\t")
     .merge ( bed_ranges ) { b, a -> tuple(a.chrom, a.start, a.end, a.name, b.start_extended, b.end_extended) }
     .view ()
-    .into { bed_ranges_extended }
+    .tap ( bed_ranges_extended )
+    .map { bed -> bed[0] }
+    .into { chromosomes_of_interest }
 
 
 // Header log info
@@ -287,7 +289,7 @@ process split_by_chr{
 
     input:
     tuple file(input_vcf), file(input_vcf_index) from split_vcf_input
-    each chr from Channel.from(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22)
+    each chr from chromosomes_of_interest
 
     output:
     tuple val(chr), file("chr_${chr}.vcf.gz") into individual_chromosomes
