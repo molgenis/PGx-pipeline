@@ -95,8 +95,9 @@ Channel
     .splitCsv(header: ['chrom', 'start_extended', 'end_extended', 'name'], sep: "\t")
     .merge ( bed_ranges ) { b, a -> tuple(a.chrom, a.start, a.end, a.name, b.start_extended, b.end_extended) }
     .view ()
-    .tap ( bed_ranges_extended )
+    .tap { bed_ranges_extended }
     .map { bed -> bed[0] }
+    .view ()
     .into { chromosomes_of_interest }
 
 
