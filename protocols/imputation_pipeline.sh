@@ -16,7 +16,6 @@ set -u
 
 # Load required modules
 module load ${javaVersion}
-#module load Anaconda3/5.3.0
 
 # Command
 ${nextflowPath} run ${pipelineRoot}/pgx-imputation-pipeline/main.nf \
