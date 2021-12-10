@@ -97,7 +97,8 @@ Channel
     .view ()
     .tap { bed_ranges_extended }
     .map { bed -> bed[0] }
-    .view ()
+    .unique()
+    .view()
     .into { chromosomes_of_interest }
 
 
@@ -318,7 +319,7 @@ process eagle_prephasing{
     --geneticMapFile=${genetic_map} \
     --chrom=${chromosome} \
     --outPrefix=chr${chromosome}.phased \
-    --numThreads=8
+    --numThreads=${task.cpus}
     """
 }
 
