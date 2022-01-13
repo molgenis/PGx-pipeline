@@ -17,10 +17,10 @@ source ${pythonEnvironment}/bin/activate
 
 mkdir -p ${cnvOutDir}
 
-python - correction fit
+python - correction fit \
 --bead-pool-manifest "${bpmFile}" \
 --sample-sheet "${samplesheet}" \
 --bed-file "${cnvBedFile}" \
 --corrective-variants "${correctiveVariantsOutputDir}/merged.prune.in" \
---data ${arrayStagedIntensities[@]} \
+--input ${arrayStagedIntensities[@]} \
 --out "${cnvOutDir}"
