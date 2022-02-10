@@ -17,7 +17,7 @@ source ${pythonEnvironment}/bin/activate
 
 mkdir -p ${cnvOutDir}
 
-python - correction fit \
+python ${asterixRoot}/src/main/python/cnvcaller/core.py correction fit \
   --bead-pool-manifest "${bpmFile}" \
   --sample-sheet "${samplesheet}" \
   --bed-file "${cnvBedFile}" \
