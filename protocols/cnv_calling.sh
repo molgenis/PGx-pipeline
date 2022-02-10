@@ -18,7 +18,7 @@ source ${pythonEnvironment}/bin/activate
 
 mkdir -p ${cnvOutDir}
 
-awk '$4 == "CYP2D6" {print $0}' pgxGenesBed37 > "cyp2d6.bed"
+awk '$4 == "CYP2D6" {print $0}' "${pgxGenesBed37}" > "cyp2d6.bed"
 
 python ${asterixRoot}/src/main/python/cnvcaller/core.py correction fit \
   --bead-pool-manifest "${bpmFile}" \
