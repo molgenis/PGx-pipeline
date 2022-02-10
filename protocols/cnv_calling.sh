@@ -25,5 +25,6 @@ python ${asterixRoot}/src/main/python/cnvcaller/core.py correction fit \
   --sample-sheet "${samplesheet}" \
   --bed-file "cyp2d6.bed" \
   --corrective-variants "${correctiveVariantsOutputDir}/merged.prune.in" \
-  --input ${arrayStagedIntensities[@]} \
-  --out "${cnvOutDir}"
+  --correction "${cnvOutDir}" \
+  --cluster-file "${cnvOutDir}" \
+  --input ${arrayStagedIntensities[@]}
