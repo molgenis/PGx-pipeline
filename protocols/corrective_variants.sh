@@ -24,7 +24,7 @@ do
     --out ${correctiveVariantsOutputDir}/chr_${chr}\
     --geno 0.01 \
     --maf 0.05 \
-    --hwe 0.01 \
+    --hwe 1e-6 \
     --exclude 'range' hla_range.bed \
     --bp-space 100000 \
     --indep-pairwise 500 5 0.4
