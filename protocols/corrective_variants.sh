@@ -32,3 +32,18 @@ do
 done
 
 cat ${correctiveVariantFiles[@]} > "${correctiveVariantsOutputDir}/merged.prune.in"
+
+module load "${pythonVersion}"
+module list
+
+source ${pythonEnvironment}/bin/activate
+
+python ${asterixRoot}/src/main/python/cnvcaller/core.py variants \
+  --bead-pool-manifest "${bpmFile}" \
+  --sample-sheet "${samplesheet}" \
+  --bed-file "${cnvBedFile}" \
+  --corrective-variants "${correctiveVariantsOutputDir}/merged.prune.in" \
+  --final-report-file-path ${arrayFinalReport} \
+  --window 250kb \
+  --config ${asterixRoot}/src/main/python/cnvcaller/conf/config.yml \
+  --out "${correctiveVariantsOutputDir}"
