@@ -14,14 +14,16 @@ mkdir -p ${correctiveVariantsOutputDir}
 
 echo $'6\t28477797\t35000000\tHLA\n' > hla_range.bed
 
-for chr in {1..22}
+for genotypesPlinkPrefix in "${genotypesPlinkPrefixArray[@]}"
 do
 
-  correctiveVariantFiles+=("${correctiveVariantsOutputDir}/chr_${chr}.prune.in")
+  basePlinkPrefix=$(basename ${genotypesPlinkPrefix})
+
+  correctiveVariantFiles+=("${correctiveVariantsOutputDir}/${basePlinkPrefix}.prune.in")
 
   plink \
-    --bfile ${genotypesDir}/chr_${chr} \
-    --out ${correctiveVariantsOutputDir}/chr_${chr}\
+    --bfile ${genotypesPlinkPrefix} \
+    --out ${correctiveVariantsOutputDir}/${basePlinkPrefix}\
     --geno 0.01 \
     --maf 0.05 \
     --hwe 1e-6 \
@@ -31,8 +33,9 @@ do
 
 done
 
-cat ${correctiveVariantFiles[@]} > "${correctiveVariantsOutputDir}/merged.prune.in"
+cat ${correctiveVariantFiles[@]} > ${correctiveVariantsOutputDir}/merged.prune.in
 
+module purge
 module load "${pythonVersion}"
 module list
 
@@ -43,7 +46,6 @@ python ${asterixRoot}/src/main/python/cnvcaller/core.py variants \
   --sample-sheet "${samplesheet}" \
   --bed-file "${cnvBedFile}" \
   --corrective-variants "${correctiveVariantsOutputDir}/merged.prune.in" \
-  --final-report-file-path ${arrayFinalReport} \
   --window 250kb \
   --config ${asterixRoot}/src/main/python/cnvcaller/conf/config.yml \
   --out "${correctiveVariantsOutputDir}"

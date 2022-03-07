@@ -20,9 +20,9 @@ source ${pythonEnvironment}/bin/activate
 mkdir -p ${stagedIntensities}
 
 python ${asterixRoot}/src/main/python/cnvcaller/core.py data \
---bead-pool-manifest "${bpmFile}" \
---sample-sheet "${samplesheet}" \
---variants-prefix "${cnvOutDir}" \
---final-report-file-path ${arrayFinalReport} \
---out "${arrayStagedIntensities}" \
---config ${asterixRoot}/src/main/python/cnvcaller/conf/config.yml
+  --bead-pool-manifest "${bpmFile}" \
+  --sample-sheet "${samplesheet}" \
+  --variants-prefix "${cnvOutDir}" \
+  --final-report-file-path ${arrayFinalReport} \
+  --out "${arrayStagedIntensities}" \
+  --config ${asterixRoot}/src/main/python/cnvcaller/conf/config.yml
