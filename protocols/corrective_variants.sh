@@ -14,10 +14,10 @@ mkdir -p ${correctiveVariantsOutputDir}
 
 echo $'6\t28477797\t35000000\tHLA\n' > hla_range.bed
 
-for genotypesPlinkPrefix in "{genotypesPlinkPrefixArray[@]}"
+for genotypesPlinkPrefix in "${genotypesPlinkPrefixArray[@]}"
 do
 
-  basePlinkPrefix=$(basename "${genotypesPlinkPrefix}")
+  basePlinkPrefix=$(basename ${genotypesPlinkPrefix})
 
   correctiveVariantFiles+=("${correctiveVariantsOutputDir}/${basePlinkPrefix}.prune.in")
 
@@ -33,8 +33,9 @@ do
 
 done
 
-cat ${correctiveVariantFiles[@]} > "${correctiveVariantsOutputDir}/merged.prune.in"
+cat ${correctiveVariantFiles[@]} > ${correctiveVariantsOutputDir}/merged.prune.in
 
+module purge
 module load "${pythonVersion}"
 module list
 
@@ -45,7 +46,6 @@ python ${asterixRoot}/src/main/python/cnvcaller/core.py variants \
   --sample-sheet "${samplesheet}" \
   --bed-file "${cnvBedFile}" \
   --corrective-variants "${correctiveVariantsOutputDir}/merged.prune.in" \
-  --final-report-file-path ${arrayFinalReport} \
   --window 250kb \
   --config ${asterixRoot}/src/main/python/cnvcaller/conf/config.yml \
   --out "${correctiveVariantsOutputDir}"
