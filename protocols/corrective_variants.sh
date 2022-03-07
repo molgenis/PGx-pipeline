@@ -14,14 +14,16 @@ mkdir -p ${correctiveVariantsOutputDir}
 
 echo $'6\t28477797\t35000000\tHLA\n' > hla_range.bed
 
-for chr in {1..22}
+for genotypesPlinkPrefix in "{genotypesPlinkPrefixArray[@]}"
 do
 
-  correctiveVariantFiles+=("${correctiveVariantsOutputDir}/chr_${chr}.prune.in")
+  basePlinkPrefix=$(basename "${genotypesPlinkPrefix}")
+
+  correctiveVariantFiles+=("${correctiveVariantsOutputDir}/${basePlinkPrefix}.prune.in")
 
   plink \
-    --bfile ${genotypesDir}/chr_${chr} \
-    --out ${correctiveVariantsOutputDir}/chr_${chr}\
+    --bfile ${genotypesPlinkPrefix} \
+    --out ${correctiveVariantsOutputDir}/${basePlinkPrefix}\
     --geno 0.01 \
     --maf 0.05 \
     --hwe 1e-6 \
