@@ -22,7 +22,7 @@ mkdir -p ${stagedIntensities}
 python ${asterixRoot}/src/main/python/cnvcaller/core.py data \
 --bead-pool-manifest "${bpmFile}" \
 --sample-sheet "${samplesheet}" \
---bed-file "${cnvBedFile}" \
---corrective-variants "${correctiveVariantsOutputDir}/merged.prune.in" \
+--variants-prefix "${cnvOutDir}" \
 --final-report-file-path ${arrayFinalReport} \
---out "${arrayStagedIntensities}"
+--out "${arrayStagedIntensities}" \
+--config ${asterixRoot}/src/main/python/cnvcaller/conf/config.yml
