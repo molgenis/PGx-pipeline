@@ -4,6 +4,7 @@
 #string pythonEnvironment
 #string bpmFile
 #string pgxGenesBed37
+#string cnvBedFile
 #string pipelineRoot
 #string arrayStagedIntensities
 #string samplesheet
@@ -18,13 +19,10 @@ source ${pythonEnvironment}/bin/activate
 
 mkdir -p ${cnvOutDir}
 
-awk '$4 == "CYP2D6" {print $0}' "${pgxGenesBed37}" > "cyp2d6.bed"
-
 python ${asterixRoot}/src/main/python/cnvcaller/core.py fit \
   --bead-pool-manifest "${bpmFile}" \
   --sample-sheet "${samplesheet}" \
-  --bed-file "cyp2d6.bed" \
-  --corrective-variants "${correctiveVariantsOutputDir}/merged.prune.in" \
+  --variants-prefix "${correctiveVariantsOutputDir}" \
   --out ${cnvOutDir} \
   --input ${arrayStagedIntensities[@]} \
   --config ${asterixRoot}/src/main/python/cnvcaller/conf/config.yml

@@ -24,7 +24,7 @@ do
     --out ${correctiveVariantsOutputDir}/chr_${chr}\
     --geno 0.01 \
     --maf 0.05 \
-    --hwe 0.01 \
+    --hwe 1e-6 \
     --exclude 'range' hla_range.bed \
     --bp-space 100000 \
     --indep-pairwise 500 5 0.4
@@ -32,3 +32,18 @@ do
 done
 
 cat ${correctiveVariantFiles[@]} > "${correctiveVariantsOutputDir}/merged.prune.in"
+
+module load "${pythonVersion}"
+module list
+
+source ${pythonEnvironment}/bin/activate
+
+python ${asterixRoot}/src/main/python/cnvcaller/core.py variants \
+  --bead-pool-manifest "${bpmFile}" \
+  --sample-sheet "${samplesheet}" \
+  --bed-file "${cnvBedFile}" \
+  --corrective-variants "${correctiveVariantsOutputDir}/merged.prune.in" \
+  --final-report-file-path ${arrayFinalReport} \
+  --window 250kb \
+  --config ${asterixRoot}/src/main/python/cnvcaller/conf/config.yml \
+  --out "${correctiveVariantsOutputDir}"
