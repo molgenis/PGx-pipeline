@@ -23,6 +23,6 @@ python ${asterixRoot}/src/main/python/cnvcaller/core.py fit \
   --bead-pool-manifest "${bpmFile}" \
   --sample-sheet "${samplesheet}" \
   --variants-prefix "${correctiveVariantsOutputDir}" \
-  --out ${cnvOutDir} \
-  --input ${arrayStagedIntensities[@]} \
+  --out "${cnvOutDir}" \
+  --input "${arrayStagedIntensities[@]}" \
   --config ${asterixRoot}/src/main/python/cnvcaller/conf/config.yml
