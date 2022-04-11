@@ -19,7 +19,7 @@ module list
 
 R_LIBS=${rLibsPath}
 
-mkdir -p ${cnvOutDir}
+mkdir -p $(dirname ${sampleListPrefix})
 
 Rscript ${pipelineRoot}/scripts/map_genotype_samples.R \
 --mapping ${toUgliIdentifiers} \
