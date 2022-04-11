@@ -59,9 +59,14 @@ main <- function(argv=NULL) {
 
   samples_out <- sample_mapping %>%
     select(FID, IID)
+
+  raw_samples_out <- sample_mapping %>%
+    select(Sample_ID)
   
   print(samples_out)
+
   # Process output
+  write.table(raw_samples_out, paste(args$out, "samples.txt", sep = "."), col.names = F, row.names = F, quote = F, sep = "\t")
   write.table(samples_out, paste(args$out, "geno.txt", sep = "."), col.names = F, row.names = F, quote = F, sep = "\t")
   write.table(sample_mapping, paste(args$out, "map.txt", sep = "."), col.names = T, row.names = F, quote = F, sep = "\t")
 }
