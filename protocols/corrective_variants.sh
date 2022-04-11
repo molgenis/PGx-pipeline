@@ -3,7 +3,7 @@
 ### variables to help adding to database (have to use weave)
 ###
 
-
+#string plinkVersion
 #string genotypesDir
 #string correctiveVariantsOutputDir
 
@@ -26,14 +26,14 @@ do
     --out ${correctiveVariantsOutputDir}/${basePlinkPrefix}\
     --geno 0.01 \
     --maf 0.05 \
-    --hwe 1e-6 \
+    --hwe 0.01 \
     --exclude 'range' hla_range.bed \
     --bp-space 100000 \
     --indep-pairwise 500 5 0.4
 
 done
 
-cat ${correctiveVariantFiles[@]} > ${correctiveVariantsOutputDir}/merged.prune.in
+cat "${correctiveVariantFiles[@]}" > ${correctiveVariantsOutputDir}/merged.prune.in
 
 module purge
 module load "${pythonVersion}"
