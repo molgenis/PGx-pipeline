@@ -21,7 +21,7 @@ mkdir -p ${stagedIntensities}
 
 python ${asterixRoot}/src/main/python/cnvcaller/core.py data \
   --bead-pool-manifest "${bpmFile}" \
-  --sample-sheet "${samplesheet}" \
+  --sample-list "${sampleListPrefix}.samples.txt" \
   --variants-prefix "${correctiveVariantsOutputDir}" \
   --final-report-file-path ${arrayFinalReport} \
   --out "${arrayStagedIntensities}" \
