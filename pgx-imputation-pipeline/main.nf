@@ -88,19 +88,13 @@ Channel
 Channel
     .fromPath(params.range_bed_hg38)
     .splitCsv(header: ['chrom', 'start', 'end', 'name'], sep: "\t")
-    .set { bed_ranges }
-
-Channel
-    .fromPath(params.extended_range_bed_hg38)
-    .splitCsv(header: ['chrom', 'start_extended', 'end_extended', 'name'], sep: "\t")
-    .merge ( bed_ranges ) { b, a -> tuple(a.chrom, a.start, a.end, a.name, b.start_extended, b.end_extended) }
-    .view ()
-    .tap { bed_ranges_extended }
+    .map { bed -> tuple(bed.chrom, bed.start, bed.end, bed.name) }
+    .view()
+    .tap { bed_ranges }
     .map { bed -> bed[0] }
     .unique()
     .view()
-    .into { chromosomes_of_interest }
-
+    .set { chromosomes_of_interest }
 
 // Header log info
 log.info """=======================================================
@@ -125,7 +119,7 @@ summary['Eagle genetic map']        = params.eagle_genetic_map
 summary['Eagle reference panel']    = params.eagle_phasing_reference
 summary['Minimac4 reference panel'] = params.minimac_imputation_reference
 summary['Range bed file']           = params.range_bed_hg38
-summary['Extended range bed file']  = params.extended_range_bed_hg38
+summary['Imputation flank size']    = params.imputation_flank_size
 summary['Max Memory']               = params.max_memory
 summary['Max CPUs']                 = params.max_cpus
 summary['Max Time']                 = params.max_time
@@ -327,23 +321,14 @@ process minimac_imputation{
     publishDir "${params.outdir}/postimpute/", mode: 'copy', pattern: "*.dose.vcf.gz"
  
     input:
-    tuple chromosome, file(vcf), start, end, name, start_extended, end_extended from phased_vcf_cf.join(bed_ranges_extended)
+    tuple chromosome, file(vcf), chrom, start, end, name from phased_vcf_cf.cross(bed_ranges).map { crossbed -> crossbed.flatten() }
     file imputation_reference from imputation_ref_ch.collect()
+    val flank_size from params.imputation_flank_size
 
     output:
-    tuple chromosome, start, end, name, start_extended, end_extended, file("range_${chromosome}_${start}-${end}_${name}.dose.vcf.gz") into imputed_vcf_cf
+    tuple chromosome, start, end, name, file("range_${chromosome}_${start}-${end}_${name}.dose.vcf.gz") into imputed_vcf_cf
 
     script:
-    flank_size = start.toInteger() - start_extended.toInteger()
-    flank_size_alternative = end_extended.toInteger() - end.toInteger()
-
-    if ( flank_size < flank_size_alternative ) {
-        flank_size = flank_size_alternative
-    }
-
-    println flank_size
-    println flank_size_alternative
-    println flank_size - flank_size_alternative
 
     """
     minimac4 --refHaps chr${chromosome}.m3vcf.gz \

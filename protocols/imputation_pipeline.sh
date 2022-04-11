@@ -27,8 +27,8 @@ ${nextflowPath} run ${pipelineRoot}/pgx-imputation-pipeline/main.nf \
 --minimac_imputation_reference ${imputationPipelineReferencePath}/hg38/imputation/ \
 --chain_file ${pipelineRoot}/pgx-imputation-pipeline/data/GRCh37_to_GRCh38.chain \
 --range_bed_hg38 ${pgxGenesBed38} \
---extended_range_bed_hg38 ${pgxGenesBed38Flanked} \
+--imputation_flank_size ${imputationFlankSize} \
 --output_name ${outputName} \
---outdir ${imputationOutputDir}  \
+--outdir ${imputationOutputDir} \
 -profile singularity \
 -resume

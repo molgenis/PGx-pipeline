@@ -24,3 +24,5 @@ python ${pipelineRoot}/scripts/gtc_final_report.py \
 --samplesheet "${samplesheet}" \
 --gtc_directory "${gtcDataDir}/${SentrixBarcode_A}/" \
 --output_file "${arrayFinalReport}"
+
+#gzip "${arrayFinalReport}"

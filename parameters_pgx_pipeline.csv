@@ -1,7 +1,7 @@
 #Tools
 molgenisStandInScript,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/PGx-pipeline/molgenis_stand_in_script.sh
-pythonVersion,PythonPlus/3.7.4-foss-2018b-v20.11.1
-pythonEnvironment,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/virtualenv/3.7.4-foss-2018b-v20.11.1
+pythonVersion,Python/3.9.1-GCCcore-7.3.0-bare
+pythonEnvironment,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/virtualenv/3.9.1-GCCcore-7.3.0-bare
 #computeVersion,Molgenis-Compute/v19.01.1-Java-11-LTS
 #pennCNVVersion,PennCNV/1.0.4-foss-2018b
 optiCallExecutable,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/tss101-opticall-090d8ed4136a/opticall/opticall
@@ -20,3 +20,6 @@ javaVersion,Java/11-LTS
 nextflowPath,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/nextflow
 imputationPipelineReferencePath,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/data/processed/eQTGenImputeReferences_ToDrew
 outputName,genimpute_phased_imputed
+
+#Settings
+imputationFlankSize,1000000
