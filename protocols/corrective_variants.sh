@@ -43,7 +43,7 @@ source ${pythonEnvironment}/bin/activate
 
 python ${asterixRoot}/src/main/python/cnvcaller/core.py variants \
   --bead-pool-manifest "${bpmFile}" \
-  --sample-sheet "${samplesheet}" \
+  --sample-list "${sampleListPrefix}.samples.txt" \
   --bed-file "${cnvBedFile}" \
   --corrective-variants "${correctiveVariantsOutputDir}/merged.prune.in" \
   --window 250kb \
