@@ -26,5 +26,5 @@ python ${asterixRoot}/src/main/python/cnvcaller/core.py call \
   --out "${cnvOutDir}" \
   --input "${arrayStagedIntensities[@]}" \
   --correction "${cnvBatchCorrectionPath}" \
-  --cluster-file "${batchCorrectionFile}" \
+  --cluster-file "${cnvBatchCorrectionPath}" \
   --config ${asterixRoot}/src/main/python/cnvcaller/conf/config.yml
