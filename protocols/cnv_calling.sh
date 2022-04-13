@@ -12,7 +12,7 @@
 set -e
 set -u
 
-# Now laod the python version and activate the python environment
+# Now load the python version and activate the python environment
 # to perform cnv calling
 module load "${pythonVersion}"
 module list
