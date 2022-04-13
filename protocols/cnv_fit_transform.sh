@@ -19,12 +19,10 @@ module list
 
 source ${pythonEnvironment}/bin/activate
 
-python ${asterixRoot}/src/main/python/cnvcaller/core.py call \
+python ${asterixRoot}/src/main/python/cnvcaller/core.py fit \
   --bead-pool-manifest "${bpmFile}" \
   --sample-list "${sampleListPrefix}.samples.txt" \
   --variants-prefix "${correctiveVariantsOutputDir}" \
   --out "${cnvOutDir}" \
   --input "${arrayStagedIntensities[@]}" \
-  --correction "${batchCorrectionFile}" \
-  --cluster-file "${batchCorrectionFile}" \
   --config ${asterixRoot}/src/main/python/cnvcaller/conf/config.yml
