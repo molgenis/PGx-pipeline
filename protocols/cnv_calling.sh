@@ -17,6 +17,8 @@ set -u
 module load "${pythonVersion}"
 module list
 
+mkdir -p "${cnvOutDir}"
+
 source ${pythonEnvironment}/bin/activate
 
 python ${asterixRoot}/src/main/python/cnvcaller/core.py call \
