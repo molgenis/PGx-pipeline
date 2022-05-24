@@ -23,7 +23,7 @@ set -u
 
 mkdir -p "${optiCallDir}"
 
-makeTmpDir "${optiCallDir}/"
+#makeTmpDir "${optiCallDir}/"
 tmpOptiCallDir="tmp"
 
 mkdir ${tmpOptiCallDir}
