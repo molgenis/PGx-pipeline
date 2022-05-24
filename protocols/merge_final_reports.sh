@@ -37,6 +37,7 @@ first="true"
 
 for i in "${INPUTREPORTS[@]}"
 do
+  echo ${i}
 	if [[ ${first} == "true" ]]
 	then
 		cat ${i} > ${finalReport}
