@@ -21,17 +21,15 @@
 set -e
 set -u
 
-module load "${gapVersion}"
-module list
-
 mkdir -p "${optiCallDir}"
 
 makeTmpDir "${optiCallDir}/"
-tmpOptiCallDir="${MC_tmpFile}"
+tmpOptiCallDir="tmp"
 
+mkdir ${tmpOptiCallDir}
 
 cd "${tmpOptiCallDir}"
-bash ${EBROOTGAP}/scripts/GS_to_Opticall.sh -i "${finalReport}" -o "${tmpOptiCallDir}"
+bash ${pipelineRoot}/scripts/GS_to_Opticall.sh -i "${finalReport}" -o "${tmpOptiCallDir}"
 cd -
 
 echo "mv ${tmpOptiCallDir}/chr_ ${optiCallDir}"

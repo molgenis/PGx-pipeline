@@ -15,8 +15,8 @@ inputFolder="${optiCallDir}"
 outputFolder="${genSampleDir}"
 mkdir -p "${outputFolder}"
 
-makeTmpDir "${outputFolder}"
-tmpOutputFolder="${MC_tmpFile}"
+tmpOutputFolder="tmp"
+mkdir ${tmpOutputFolder}
 
 
 if [[ -z "$inputFolder" ]]

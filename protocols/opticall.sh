@@ -14,8 +14,9 @@ set -u
 module list
 
 makeTmpDir "${optiCallDir}/"
-tmpOptiCallDir="${MC_tmpFile}"
+tmpOptiCallDir="tmp"
 
+mkdir ${tmpOptiCallDir}
 
 ${opticallExecutable} \
 -in ${optiCallDir}/${chr} \
