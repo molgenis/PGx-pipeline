@@ -28,9 +28,7 @@ tmpOptiCallDir="tmp"
 
 mkdir ${tmpOptiCallDir}
 
-cd "${tmpOptiCallDir}"
 bash ${pipelineRoot}/scripts/GS_to_Opticall.sh -i "${finalReport}" -o "${tmpOptiCallDir}"
-cd -
 
 echo "mv ${tmpOptiCallDir}/chr_ ${optiCallDir}"
 mv "${tmpOptiCallDir}/chr_"* "${optiCallDir}"
