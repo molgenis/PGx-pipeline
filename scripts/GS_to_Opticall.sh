@@ -81,7 +81,7 @@ for z in *tmp3;
 done
 # Remove temp files.
 
-cd ${output}
+#cd ${output}
 
 #for i in {0..22};do
 #	rm _tmp_${i}*
