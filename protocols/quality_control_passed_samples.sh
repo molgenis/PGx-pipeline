@@ -22,6 +22,6 @@ R_LIBS=${rLibsPath}
 mkdir -p $(dirname ${sampleListPrefix})
 
 Rscript ${pipelineRoot}/scripts/map_genotype_samples.R \
---mapping ${toUgliIdentifiers} \
+--mapping ${sample_id_mapping_file} \
 --samplesheet ${samplesheet} \
 --gid-col "UGLI_ID" --sid-col "genotyping_name" --out ${sampleListPrefix}

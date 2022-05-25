@@ -13,9 +13,9 @@ set -u
 
 module list
 
-makeTmpDir "${optiCallDir}/"
 tmpOptiCallDir="tmp"
 
+mkdir ${optiCallDir}
 mkdir ${tmpOptiCallDir}
 
 ${opticallExecutable} \
