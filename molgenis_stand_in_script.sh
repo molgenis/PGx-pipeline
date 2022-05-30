@@ -17,9 +17,15 @@ set -u
 
 cd "${SLURM_JOB_NAME}_${SLURM_ARRAY_TASK_ID}"
 
-echo "Sourcing parameters from: ${parameters}"
 echo "Running the following protocol: ${protocol}"
-source "${parameters}"
+if [ -z ${parameters+x} ]; then
+  echo "no external parameter file";
+else
+  echo "Sourcing parameters from: ${parameters}"
+  source ${parameters};
+fi
+
+echo "Sourcing parameters from: params.sh"
 source "params.sh"
 
 echo "Starting..."
