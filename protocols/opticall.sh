@@ -11,14 +11,14 @@
 set -e
 set -u
 
+module load opticall/0.8.1-foss-2018b
 module list
 
 tmpOptiCallDir="tmp"
 
-mkdir ${optiCallDir}
 mkdir ${tmpOptiCallDir}
 
-${opticallExecutable} \
+${EBROOTOPTICALL}/opticall \
 -in ${optiCallDir}/${chr} \
 -out ${tmpOptiCallDir}/${chr}
 
