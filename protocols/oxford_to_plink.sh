@@ -2,7 +2,7 @@ set -e
 set -u
 
 ###create working directories
-mkdir -p "${genSampleDir}/0_pre"
+mkdir -p "${sampleQcDir}/0_pre"
 
 bash ${codedir}/sub1.gensample_to_plink.sh \
   ${sampleQcDir}/0_pre/ \
