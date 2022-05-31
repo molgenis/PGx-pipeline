@@ -15,6 +15,28 @@ mkdir -p "${GeneralQCDir}/5_Relatedness/proc2/"
 mkdir -p "${GeneralQCDir}/6_PCA"
 mkdir -p "${GeneralQCDir}/6_PCA/proc2"
 mkdir -p "${GeneralQCDir}/6_PCA/proc"
+mkdir -p "${GeneralQCDir}/X_QC"
+mkdir -p "${GeneralQCDir}/Y_QC"
+mkdir -p "${GeneralQCDir}/MT_QC"
+
+##################################################################################################
+################-------------oxford file to plink files--------########################################
+
+for f in ${GeneralQCDir}/0_pre/chr_Y.*; do
+
+    ## Check if the glob gets expanded to existing files.
+    ## If not, f here will be exactly the pattern above
+    ## and the exists test will evaluate to false.
+    if [ -e "$f" ]
+    then
+      ### move haploid cromodomes out
+      mv  ${GeneralQCDir}/0_pre/chr_Y.* ${GeneralQCDir}/Y_QC/
+      mv  ${GeneralQCDir}/0_pre/chr_MT.* ${GeneralQCDir}/MT_QC/
+      mv  ${GeneralQCDir}/0_pre/chr_X.* ${GeneralQCDir}/X_QC/
+    fi
+    ## This is all we needed to know, so we can break after the first iteration
+    break
+done
 
 ##################################################################################################
 ################-------------Call rate filtering--------########################################
