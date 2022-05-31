@@ -15,17 +15,6 @@ mkdir -p "${GeneralQCDir}/5_Relatedness/proc2/"
 mkdir -p "${GeneralQCDir}/6_PCA"
 mkdir -p "${GeneralQCDir}/6_PCA/proc2"
 mkdir -p "${GeneralQCDir}/6_PCA/proc"
-mkdir -p "${GeneralQCDir}/X_QC"
-mkdir -p "${GeneralQCDir}/Y_QC"
-mkdir -p "${GeneralQCDir}/MT_QC"
-
-##################################################################################################
-################-------------oxford file to plink files--------########################################
-
-### move haploid cromodomes out
-mv  ${GeneralQCDir}/0_pre/chr_Y.* ${GeneralQCDir}/Y_QC/
-mv  ${GeneralQCDir}/0_pre/chr_MT.* ${GeneralQCDir}/MT_QC/
-mv  ${GeneralQCDir}/0_pre/chr_X.* ${GeneralQCDir}/X_QC/
 
 ##################################################################################################
 ################-------------Call rate filtering--------########################################
