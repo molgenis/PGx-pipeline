@@ -190,12 +190,13 @@ process harmonize_hg38{
 
     script:
     """
-    java -Xmx25g -jar /usr/bin/GenotypeHarmonizer.jar\
-     --input ${study_name_bed.baseName}\
-     --inputType PLINK_BED\
-     --ref ${vcf_file.simpleName}\
-     --refType VCF\
-     --update-id\
+    java -Xmx25g -jar /usr/bin/GenotypeHarmonizer.jar \
+     --input ${study_name_bed.baseName} \
+     --inputType PLINK_BED \
+     --ref ${vcf_file.simpleName} \
+     --refType VCF \
+     --update-id \
+     --keep \
      --output harmonised
     """
 }
