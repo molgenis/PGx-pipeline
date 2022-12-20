@@ -18,7 +18,7 @@ variantsPassedValidation,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/data/
 #Imputation pipeline
 javaVersion,Java/11-LTS
 nextflowPath,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/nextflow
-imputationPipelineReferencePath,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/data/processed/eQTGenImputeReferences_ToDrew
+imputationPipelineReferencePath,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/data/processed/imputationreference
 outputName,genimpute_phased_imputed
 
 #Settings

@@ -21,7 +21,7 @@ mkdir -p "${cnvOutDir}"
 
 source ${pythonEnvironment}/bin/activate
 
-python ${asterixRoot}/src/main/python/cnvcaller/core.py fit \
+python -u ${asterixRoot}/src/main/python/cnvcaller/core.py fit \
   --bead-pool-manifest "${bpmFile}" \
   --sample-list "${sampleListPrefix}.samples.txt" \
   --variants-prefix "${correctiveVariantsOutputDir}" \
