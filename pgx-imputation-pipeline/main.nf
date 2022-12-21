@@ -225,7 +225,7 @@ process vcf_fixref_hg38{
 
     script:
     """
-    bgzip ${input_vcf}
+    bcftools sort ${input_vcf} -output-type z --output ${input_vcf}.gz
     bcftools index ${input_vcf}.gz
     
     bcftools +fixref ${input_vcf}.gz -- -f ${fasta} -i ${vcf_file} | \
@@ -253,8 +253,6 @@ process filter_preimpute_vcf{
 
     #Filter rare and non-HWE variants and those with abnormal alleles and duplicates
     bcftools filter -i 'INFO/HWE > 1e-6 & F_MISSING < 0.05 & MAF[0] > 0.01' tagged.vcf.gz |\
-     bcftools filter -e 'REF="N" | REF="I" | REF="D"' |\
-     bcftools filter -e "ALT='.'" |\
      bcftools norm -d all |\
      bcftools norm -m+any |\
      bcftools view -m2 -M2 -Oz -o filtered.vcf.gz
