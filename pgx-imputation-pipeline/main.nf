@@ -225,7 +225,7 @@ process vcf_fixref_hg38{
 
     script:
     """
-    bcftools sort ${input_vcf} -output-type z --output ${input_vcf}.gz
+    bcftools sort ${input_vcf} --output-type z -o ${input_vcf}.gz
     bcftools index ${input_vcf}.gz
     
     bcftools +fixref ${input_vcf}.gz -- -f ${fasta} -i ${vcf_file} | \
