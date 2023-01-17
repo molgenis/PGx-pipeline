@@ -179,38 +179,16 @@ process sort_bed{
     """
 }
 
-process harmonize_hg38{
-
-    input:
-    tuple file(study_name_bed), file(study_name_bim), file(study_name_fam) from sorted_genotypes_hg38_ch
-    tuple file(vcf_file), file(vcf_file_index) from ref_panel_harmonise_genotypes_hg38.collect()
-
-    output:
-    tuple file("harmonised.bed"), file("harmonised.bim"), file("harmonised.fam") into harmonised_genotypes_hg38_ch
-
-    script:
-    """
-    java -Xmx25g -jar /usr/bin/GenotypeHarmonizer.jar \
-     --input ${study_name_bed.baseName} \
-     --inputType PLINK_BED \
-     --ref ${vcf_file.simpleName} \
-     --refType VCF \
-     --update-id \
-     --keep \
-     --output harmonised
-    """
-}
-
 process plink_to_vcf{
     input:
-    set file(study_name_bed), file(study_name_bim), file(study_name_fam) from harmonised_genotypes_hg38_ch
+    set file(study_name_bed), file(study_name_bim), file(study_name_fam) from sorted_genotypes_hg38_ch
 
     output:
-    file "harmonised_hg38.vcf" into harmonized_hg38_vcf_ch
+    file "sorted_hg38.vcf" into sorted_hg38_vcf_ch
 
     script:
     """
-    plink2 --bfile ${study_name_bed.simpleName} --recode vcf-iid --chr 1-22 --out harmonised_hg38
+    plink2 --bfile ${study_name_bed.simpleName} --recode vcf-iid --chr 1-22 --out sorted_hg38
     """
 }
 
