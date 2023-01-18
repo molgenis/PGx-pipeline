@@ -205,7 +205,8 @@ process filter_preimpute_vcf{
     script:
     """
     #Index
-    bcftools index ${input_vcf}
+    bcftools sort ${input_vcf} --output-type z -o ${input_vcf}.gz
+    bcftools index ${input_vcf}.gz
 
     #Add tags
     bcftools +fill-tags ${input_vcf} -Oz -o tagged.vcf.gz
