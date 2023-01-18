@@ -192,32 +192,12 @@ process plink_to_vcf{
     """
 }
 
-process vcf_fixref_hg38{
-    input:
-    file input_vcf from sorted_hg38_vcf_ch
-    file fasta from target_ref_ch2.collect()
-    set file(vcf_file), file(vcf_file_index) from ref_panel_fixref_genotypes_hg38
-
-    output:
-    file "fixref_hg38.vcf.gz" into fixed_to_filter
-
-    script:
-    """
-    bcftools sort ${input_vcf} --output-type z -o ${input_vcf}.gz
-    bcftools index ${input_vcf}.gz
-    
-    bcftools +fixref ${input_vcf}.gz -- -f ${fasta} -i ${vcf_file} | \
-    bcftools norm --check-ref x -f ${fasta} | \
-    bcftools sort -Oz -o fixref_hg38.vcf.gz
-    """
-}
-
 process filter_preimpute_vcf{
     publishDir "${params.outdir}/preimpute/", mode: 'copy',
         saveAs: {filename -> if (filename == "filtered.vcf.gz") "${params.output_name}_preimpute.vcf.gz" else null }
 
     input:
-    file input_vcf from fixed_to_filter
+    file input_vcf from sorted_hg38_vcf_ch
 
     output:
     set file("filtered.vcf.gz"), file("filtered.vcf.gz.csi") into split_vcf_input, missingness_input
