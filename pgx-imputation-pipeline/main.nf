@@ -81,6 +81,11 @@ Channel
     .set { chain_file_ch }
 
 Channel
+    .fromPath(params.indel_mapping_file)
+    .ifEmpty { exit 1, "indel mapping file not found: ${params.indel_mapping_file}" }
+    .set { indel_mapping_file_ch }
+
+Channel
     .fromPath(params.target_ref)
     .ifEmpty { exit 1, "CrossMap.py target reference genome file: ${params.target_ref}" } 
     .into { target_ref_ch; target_ref_ch2 }
@@ -172,16 +177,33 @@ process sort_bed{
 
     output:
     tuple file("sorted.bed"), file("sorted.bim"), file("sorted.fam") into sorted_genotypes_hg38_ch
-    
+
     script:
     """
     plink2 --bfile ${study_name_bed.simpleName} --make-bed --output-chr MT --out sorted
     """
 }
 
-process plink_to_vcf{
+process plink_fix_indels{
     input:
     set file(study_name_bed), file(study_name_bim), file(study_name_fam) from sorted_genotypes_hg38_ch
+    file indel_mapping_file from indel_mapping_file_ch
+
+    output:
+    tuple file("mapped_indels.bed"), file("mapped_indels.bim"), file("mapped_indels.fam") into indel_fix_genotypes_hg38_ch
+
+    script:
+    """
+    plink2 --bfile ${study_name_bed.simpleName} \
+    --update-alleles ${indel_mapping_file} \
+    --update-map ${indel_mapping_file} 6 \
+     --out mapped_indels
+    """
+}
+
+process plink_to_vcf{
+    input:
+    set file(study_name_bed), file(study_name_bim), file(study_name_fam) from indel_fix_genotypes_hg38_ch
 
     output:
     file "sorted_hg38.vcf" into sorted_hg38_vcf_ch
@@ -192,12 +214,32 @@ process plink_to_vcf{
     """
 }
 
+process vcf_fixref_hg38{
+    input:
+    file input_vcf from sorted_hg38_vcf_ch
+    file fasta from target_ref_ch2.collect()
+    set file(vcf_file), file(vcf_file_index) from ref_panel_fixref_genotypes_hg38
+
+    output:
+    file "fixref_hg38.vcf.gz" into fixed_to_filter
+
+    script:
+    """
+    bcftools sort ${input_vcf} --output-type z -o ${input_vcf}.gz
+    bcftools index ${input_vcf}.gz
+
+    bcftools +fixref ${input_vcf}.gz -- -f ${fasta} -i ${vcf_file} | \
+    bcftools norm --check-ref x -f ${fasta} | \
+    bcftools sort -Oz -o fixref_hg38.vcf.gz
+    """
+}
+
 process filter_preimpute_vcf{
     publishDir "${params.outdir}/preimpute/", mode: 'copy',
         saveAs: {filename -> if (filename == "filtered.vcf.gz") "${params.output_name}_preimpute.vcf.gz" else null }
 
     input:
-    file input_vcf from sorted_hg38_vcf_ch
+    file input_vcf from fixed_to_filter
 
     output:
     set file("filtered.vcf.gz"), file("filtered.vcf.gz.csi") into split_vcf_input, missingness_input

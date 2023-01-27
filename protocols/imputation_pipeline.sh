@@ -26,6 +26,7 @@ ${nextflowPath} run ${pipelineRoot}/pgx-imputation-pipeline/main.nf \
 --eagle_phasing_reference ${imputationPipelineReferencePath}/hg38/phasing/phasing_reference/ \
 --minimac_imputation_reference ${imputationPipelineReferencePath}/hg38/imputation/ \
 --chain_file ${pipelineRoot}/pgx-imputation-pipeline/data/GRCh37_to_GRCh38.chain \
+--indel_mapping_file ${indelMappingFile} \
 --range_bed_hg38 ${pgxGenesBed38} \
 --imputation_flank_size ${imputationFlankSize} \
 --output_name ${outputName} \
