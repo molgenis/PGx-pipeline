@@ -1,6 +1,6 @@
 FROM nfcore/base:1.9
 LABEL authors=" " \
-      description="Docker image containing all software requirements for the nf-core/imputation pipeline"
+      description="Docker image containing all software requirements for the pgx-imputation-pipeline"
 
 # Install the conda environment
 COPY environment.yml /
@@ -16,4 +16,3 @@ RUN conda env export --name nf-core-imputation-1.0dev > nf-core-imputation-1.0de
 RUN apt-get clean && apt-get update && apt-get install -y libgomp1
 COPY bin/eagle /usr/bin/
 COPY bin/minimac4 /usr/bin/
-COPY bin/GenotypeHarmonizer-1.4.20/ /usr/bin/
