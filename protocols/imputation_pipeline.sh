@@ -20,11 +20,11 @@ module load ${javaVersion}
 # Command
 ${nextflowPath} run ${pipelineRoot}/pgx-imputation-pipeline/main.nf \
 --bfile ${concatenatedGenotypesOutputDir}/chr_all \
---target_ref ${imputationPipelineReferencePath}/hg38/ref_genome_QC/Homo_sapiens.GRCh38.dna.primary_assembly.fa \
---ref_panel_hg38 ${imputationPipelineReferencePath}/hg38/ref_panel_QC/30x-GRCh38_NoSamplesSorted \
---eagle_genetic_map ${imputationPipelineReferencePath}/hg38/phasing/genetic_map/genetic_map_hg38_withX.txt.gz \
---eagle_phasing_reference ${imputationPipelineReferencePath}/hg38/phasing/phasing_reference/ \
---minimac_imputation_reference ${imputationPipelineReferencePath}/hg38/imputation/ \
+--target_ref ${imputationPipelineReferencePath}/hg38/genome_reference/Homo_sapiens.GRCh38.dna.primary_assembly.fa \
+--ref_panel_hg38 ${imputationPipelineReferencePath}/hg38/harmonizing_reference/30x-GRCh38_NoSamplesSorted \
+--eagle_genetic_map ${imputationPipelineReferencePath}/hg38/phasing_reference/genetic_map/genetic_map_hg38_withX.txt.gz \
+--eagle_phasing_reference ${imputationPipelineReferencePath}/hg38/phasing_reference/phasing/ \
+--minimac_imputation_reference ${imputationPipelineReferencePath}/hg38/imputation_reference/ \
 --chain_file ${pipelineRoot}/pgx-imputation-pipeline/data/GRCh37_to_GRCh38.chain \
 --range_bed_hg38 ${pgxGenesBed38} \
 --imputation_flank_size ${imputationFlankSize} \
