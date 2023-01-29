@@ -197,7 +197,7 @@ process plink_fix_indels{
     plink2 --bfile ${study_name_bed.simpleName} \
     --update-alleles ${indel_mapping_file} \
     --update-map ${indel_mapping_file} 6 \
-     --out mapped_indels
+    --out mapped_indels --make-bed
     """
 }
 
