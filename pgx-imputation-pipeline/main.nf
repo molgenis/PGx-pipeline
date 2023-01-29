@@ -254,7 +254,7 @@ process filter_preimpute_vcf{
     bcftools +fill-tags ${input_vcf} -Oz -o tagged.vcf.gz
 
     #Filter rare and non-HWE variants and those with abnormal alleles and duplicates
-    bcftools filter -i 'INFO/HWE > 1e-6 & F_MISSING < 0.05 & MAF[0] > 0.01' tagged.vcf.gz |\
+    bcftools filter -i 'INFO/HWE > 1e-6 & F_MISSING < 0.05' tagged.vcf.gz |\
      bcftools norm -d all |\
      bcftools norm -m+any |\
      bcftools view -m2 -M2 -Oz -o filtered.vcf.gz
