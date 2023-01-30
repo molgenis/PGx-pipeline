@@ -210,7 +210,7 @@ process plink_to_vcf{
 
     script:
     """
-    plink2 --bfile ${study_name_bed.simpleName} --export vcf id-paste=iid --chr 1-22 --out sorted_hg38
+    plink2 --bfile ${study_name_bed.simpleName} --export vcf-4.2 id-paste=iid --chr 1-22 --out sorted_hg38
     """
 }
 
