@@ -343,3 +343,18 @@ process minimac_imputation{
     --noPhoneHome
     """
 }
+
+process index_imputation{
+    publishDir "${params.outdir}/postimpute/", mode: 'copy', pattern: "*.dose.vcf.gz.tbi"
+
+    input:
+    tuple chromosome, start, end, name, file(vcf) from imputed_vcf_cf
+
+    output:
+    tuple chromosome, start, end, name, file("*.tbi") into imputed_vcf_tbi_cf
+
+    script:
+    """
+    tabix ${vcf}
+    """
+}
