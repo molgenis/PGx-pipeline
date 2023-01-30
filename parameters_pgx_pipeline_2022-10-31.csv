@@ -9,6 +9,7 @@ RPlusVersion,RPlus/4.0.3-foss-2018b-v21.01.1
 plinkVersion,PLINK/1.9-beta6-20190617
 plink2Version,PLINK/2.0-alpha2-20191006
 htslibVersion,HTSlib/1.11-GCCcore-7.3.0
+bcftoolsVersion,BCFtools/1.16-GCCcore-11.3.0
 boostVersion,Boost/1.67.0-foss-2018b
 shapeitExecutable,/groups/umcg-fg/tmp01/projects/pgx-passport/tools/shapeit4-4.2.1/bin/shapeit4.2
 
@@ -18,7 +19,7 @@ variantsPassedValidation,/groups/umcg-fg/tmp01/projects/pgx-passport/data/passpo
 #Imputation pipeline
 javaVersion,Java/11-LTS
 nextflowPath,/groups/umcg-fg/tmp01/projects/pgx-passport/tools/nextflow
-imputationPipelineReferencePath,/groups/umcg-fg/tmp01/projects/pgx-passport/data/processed/eQTGenImputeReferences_ToDrew
+imputationPipelineReferencePath,/groups/umcg-fg/tmp01/projects/pgx-passport/data/processed/imputationreference/
 outputName,genimpute_phased_imputed
 
 #Settings
