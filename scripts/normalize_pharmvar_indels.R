@@ -48,18 +48,24 @@ main <- function(argv = NULL) {
     mutate(
       Indel = case_when(
       max(str_count(Alleles)) == str_count(Alleles) ~ "Ins",
-      TRUE ~ "Del")
+      TRUE ~ "Del",
+      `Variant Start` = POS)
     ) %>% select(c("rsID" = "ID", "Indel" = "Indel", "Alleles" = "Alleles"))
 
   pharmvar_updated <- pharmvar_pivotted %>%
-    mutate(`Old Alleles` = Alleles) %>%
+    mutate(
+      `Old Alleles` = Alleles,
+      `Old Variant Start` = `Variant Start`,
+      `Old Variant Stop` = `Variant Stop`,
+      `Old Variant Dist` = `Variant Stop` - `Variant Start`) %>%
     rows_update(
       reference_indels_pivotted, by=c("rsID", "Indel"),
-      unmatched = "ignore")
+      unmatched = "ignore") %>%
+    mutate(`Variant Stop` = `Variant Start` + `Old Variant Dist`)
 
   fwrite(
     pharmvar_updated %>% filter(rsID %in% reference_indels$ID) %>%
-      select(c("Haplotype Name", "Gene", "rsID", "Alleles", "Old Alleles")),
+      select(c("Haplotype Name", "Gene", "rsID", "Old Alleles", "Alleles", "Old Variant Start", "Variant Start", "Old Variant Stop", "Variant Stop")),
     paste0(args$out, sub('\\.tsv$', '.indels_mapped_inspection.tsv', basename(args$pharmvar_table))),
     sep="\t")
 
