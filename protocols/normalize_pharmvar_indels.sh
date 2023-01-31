@@ -22,6 +22,6 @@ for pharmvarFilename in ${pharmvarHaplotypeDir}/*.haplotypes.tsv; do
   # Start R script to normalise indels
   Rscript ${pipelineRoot}/scripts/normalize_pharmvar_indels.R \
   --reference-indels reference_indels.txt \
-  --pharmvar-table ${pharmvarHaplotypeDir}/${pharmvarFilename} \
+  --pharmvar-table ${pharmvarFilename} \
   --out ${pharmvarProcessedHaplotypeDir}/
 done
