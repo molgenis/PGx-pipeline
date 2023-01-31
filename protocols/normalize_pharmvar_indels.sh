@@ -16,7 +16,11 @@ mkdir -p ${pharmvarProcessedHaplotypeDir}
 
 # Pipe rsids from reference to mapping file
 zcat ${imputationPipelineReferencePath}/hg38/harmonizing_reference/30x-GRCh38_NoSamplesSorted.vcf.gz \
-| grep -F -f ${missingIndelFile} > reference_indels.txt
+| head -n 1000 | grep '^#CHROM' > reference_indels.txt
+
+# Pipe rsids from reference to mapping file
+zcat ${imputationPipelineReferencePath}/hg38/harmonizing_reference/30x-GRCh38_NoSamplesSorted.vcf.gz \
+| grep -F -f ${missingIndelFile} >> reference_indels.txt
 
 for pharmvarFilename in ${pharmvarHaplotypeDir}/*.haplotypes.tsv; do
   # Start R script to normalise indels

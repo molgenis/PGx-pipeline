@@ -27,10 +27,7 @@ main <- function(argv = NULL) {
 
   # Process input
   pharmvar_table <- tibble(fread(args$pharmvar_table, data.table=F))
-  reference_table <- fread(cmd=sprintf(
-    "zcat %s | head -n 1000 | grep -v '^##'", args$reference_vcf), nrows=10)
-  reference_indels <- tibble(fread(args$reference_indels, data.table=F,
-                            col.names = colnames(reference_table), sep="\t"))
+  reference_indels <- tibble(fread(args$reference_indels, data.table=F, sep="\t"))
 
   # Perform method
   pharmvar_pivotted <- pharmvar_table %>%
