@@ -47,10 +47,10 @@ main <- function(argv = NULL) {
     group_by(ID) %>%
     mutate(
       Indel = case_when(
-      max(str_count(Alleles)) == str_count(Alleles) ~ "Ins",
-      TRUE ~ "Del",
-      `Variant Start` = POS)
-    ) %>% select(c("rsID" = "ID", "Indel" = "Indel", "Alleles" = "Alleles"))
+        max(str_count(Alleles)) == str_count(Alleles) ~ "Ins",
+        TRUE ~ "Del"),
+      `Variant Start` = POS) %>%
+    select(c("rsID" = "ID", "Indel" = "Indel", "Alleles" = "Alleles"))
 
   pharmvar_updated <- pharmvar_pivotted %>%
     mutate(

@@ -12,6 +12,8 @@ set -u
 module load "${RPlusVersion}"
 module list
 
+export R_LIBS_USER=${rLibsPath}
+
 mkdir -p ${pharmvarProcessedHaplotypeDir}
 
 # Pipe rsids from reference to mapping file
