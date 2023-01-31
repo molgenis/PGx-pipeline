@@ -54,8 +54,7 @@ main <- function(argv = NULL) {
   pharmvar_updated <- pharmvar_pivotted %>%
     mutate(`Old Alleles` = Alleles) %>%
     rows_update(
-      reference_indels_pivotted, by=c("rsID", "Indel"),
-      unmatched = "ignore")
+      reference_indels_pivotted, by=c("rsID", "Indel"), unmatched = "ignore")
 
   fwrite(
     pharmvar_updated %>% filter(rsID %in% reference_indels$ID) %>%
