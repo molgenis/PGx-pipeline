@@ -91,6 +91,10 @@ Channel
     .into { target_ref_ch; target_ref_ch2 }
 
 Channel
+    .fromPath(params.annotation_vcf_file)
+    .set { annotation_vcf_ch }
+
+Channel
     .fromPath(params.range_bed_hg38)
     .splitCsv(header: ['chrom', 'start', 'end', 'name'], sep: "\t")
     .map { bed -> tuple(bed.chrom, bed.start, bed.end, bed.name) }
@@ -330,7 +334,7 @@ process minimac_imputation{
     tuple chromosome, start, end, name, file("range_${chromosome}_${start}-${end}_${name}.dose.vcf.gz") into imputed_vcf_cf
 
     script:
-
+    // Start minimac
     """
     minimac4 --refHaps chr${chromosome}.m3vcf.gz \
     --haps ${vcf} \
@@ -351,10 +355,38 @@ process index_imputation{
     tuple chromosome, start, end, name, file(vcf) from imputed_vcf_cf
 
     output:
-    tuple chromosome, start, end, name, file("*.tbi") into imputed_vcf_tbi_cf
+    tuple chromosome, start, end, name, file(vcf), file("*.tbi") into imputed_vcf_tbi_cf
 
     script:
     """
     tabix ${vcf}
+    """
+}
+
+process annotate_imputation{
+    publishDir "${params.outdir}/annotated/", mode: 'copy', pattern: "*.annotated.vcf.gz"
+    publishDir "${params.outdir}/annotated/", mode: 'copy', pattern: "*.annotated.vcf.gz.tbi"
+
+    input:
+    tuple chromosome, start, end, name, file(vcf), file(index) from imputed_vcf_tbi_cf
+    file annotation_vcf from annotation_vcf_ch.collect()
+
+    output:
+    tuple chromosome, start, end, name, file("*.vcf.gz"), file("*.vcf.gz.tbi") into annotated_vcf_tbi_cf
+
+    script:
+    """
+    tabix ${annotation_vcf}
+
+    bcftools annotate ${vcf} -x "INFO/AF" -O z -o removed_af_info.vcf.gz
+    tabix removed_af_info.vcf.gz
+    
+    bcftools annotate removed_af_info.vcf.gz \
+    --annotations ${annotation_vcf} \
+    --columns "INFO,ID" \
+    --output range_${chromosome}_${start}-${end}_${name}.annotated.vcf.gz \
+    --output-type 'z'
+
+    tabix range_${chromosome}_${start}-${end}_${name}.annotated.vcf.gz
     """
 }
