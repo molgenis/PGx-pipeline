@@ -324,7 +324,7 @@ process eagle_prephasing{
 
 process minimac_imputation{
     publishDir "${params.outdir}/postimpute/", mode: 'copy', pattern: "*.dose.vcf.gz"
- 
+
     input:
     tuple chromosome, file(vcf), chrom, start, end, name from phased_vcf_cf.cross(bed_ranges).map { crossbed -> crossbed.flatten() }
     file imputation_reference from imputation_ref_ch.collect()
@@ -342,13 +342,35 @@ process minimac_imputation{
     --start ${start} \
     --end ${end} \
     --window ${flank_size} \
-    --prefix range_${chromosome}_${start}-${end}_${name} \
+    --prefix imputed \
     --format GT,GP,HDS \
     --noPhoneHome
+
+    tabix imputed.dose.vcf.gz
+
+    bcftools concat ${vcf} imputed.dose.vcf.gz \
+    --remove-duplicates --allow-overlaps \
+    --output range_${chromosome}_${start}-${end}_${name}.dose.vcf.gz \
+    --output-type z
     """
 }
 
 process index_imputation{
+    publishDir "${params.outdir}/postimpute/", mode: 'copy', pattern: "*.dose.vcf.gz.tbi"
+
+    input:
+    tuple chromosome, start, end, name, file(vcf) from imputed_vcf_cf
+
+    output:
+    tuple chromosome, start, end, name, file(vcf), file("*.tbi") into imputed_vcf_tbi_cf
+
+    script:
+    """
+    tabix ${vcf}
+    """
+}
+
+process concatenate_missing{
     publishDir "${params.outdir}/postimpute/", mode: 'copy', pattern: "*.dose.vcf.gz.tbi"
 
     input:
