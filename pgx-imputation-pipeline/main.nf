@@ -351,6 +351,7 @@ process minimac_imputation{
     tabix imputed.dose.vcf.gz
 
     bcftools concat ${vcf} imputed.dose.vcf.gz \
+    --regions ${chromosome}:${start}-${end} \
     --remove-duplicates --allow-overlaps \
     --output range_${chromosome}_${start}-${end}_${name}.dose.vcf.gz \
     --output-type z
