@@ -355,7 +355,7 @@ process minimac_imputation{
     """
 }
 
-process index_imputation{
+process index_imputation {
     publishDir "${params.outdir}/postimpute/", mode: 'copy', pattern: "*.dose.vcf.gz.tbi"
 
     input:
@@ -370,22 +370,7 @@ process index_imputation{
     """
 }
 
-process concatenate_missing{
-    publishDir "${params.outdir}/postimpute/", mode: 'copy', pattern: "*.dose.vcf.gz.tbi"
-
-    input:
-    tuple chromosome, start, end, name, file(vcf) from imputed_vcf_cf
-
-    output:
-    tuple chromosome, start, end, name, file(vcf), file("*.tbi") into imputed_vcf_tbi_cf
-
-    script:
-    """
-    tabix ${vcf}
-    """
-}
-
-process annotate_imputation{
+process annotate_imputation {
     publishDir "${params.outdir}/annotated/", mode: 'copy', pattern: "*.annotated.vcf.gz"
     publishDir "${params.outdir}/annotated/", mode: 'copy', pattern: "*.annotated.vcf.gz.tbi"
 
