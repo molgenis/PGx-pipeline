@@ -318,7 +318,8 @@ process eagle_prephasing{
     --geneticMapFile=${genetic_map} \
     --chrom=${chromosome} \
     --outPrefix=chr${chromosome}.phased \
-    --numThreads=${task.cpus}
+    --numThreads=${task.cpus} \
+    --noImpMissing
     """
 }
 
