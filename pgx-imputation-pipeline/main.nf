@@ -389,7 +389,7 @@ process annotate_imputation {
     """
     tabix ${annotation_vcf}
 
-    bcftools annotate ${vcf} -x "INFO/AF" -O z -o removed_af_info.vcf.gz
+    bcftools annotate ${vcf} -x "INFO/AF" --set-id '%CHROM:%POS:%REF:%FIRST_ALT' -O z -o removed_af_info.vcf.gz
     tabix removed_af_info.vcf.gz
     
     bcftools annotate removed_af_info.vcf.gz \
