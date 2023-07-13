@@ -383,7 +383,7 @@ process annotate_imputation {
     file annotation_vcf from annotation_vcf_ch.collect()
 
     output:
-    tuple chromosome, start, end, name, file("*.vcf.gz"), file("*.vcf.gz.tbi") into annotated_vcf_tbi_cf
+    tuple chromosome, start, end, name, file("range_*.vcf.gz"), file("range_*.vcf.gz.tbi") into annotated_vcf_tbi_cf
 
     script:
     """
