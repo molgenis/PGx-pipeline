@@ -27,7 +27,6 @@ ${nextflowPath} run ${pipelineRoot}/pgx-imputation-pipeline/main.nf \
 --minimac_imputation_reference ${imputationPipelineReferencePath}/hg38/imputation_reference/ \
 --chain_file ${pipelineRoot}/pgx-imputation-pipeline/data/GRCh37_to_GRCh38.chain \
 --annotation_vcf_file ${gnomadAnnotationFile} \
---indel_mapping_file ${indelMappingFile} \
 --range_bed_hg38 ${pgxGenesBed38Flanked} \
 --imputation_flank_size ${imputationFlankSize} \
 --output_name ${outputName} \
