@@ -213,7 +213,7 @@ process fix_indels{
 
 process vcf_fixref_hg38{
     input:
-    file input_vcf from sorted_hg38_vcf_ch
+    file input_vcf from indel_fix_genotypes_hg38_ch
     file fasta from target_ref_ch2.collect()
     set file(vcf_file), file(vcf_file_index) from ref_panel_fixref_genotypes_hg38
 
