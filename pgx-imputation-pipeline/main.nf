@@ -81,11 +81,6 @@ Channel
     .set { chain_file_ch }
 
 Channel
-    .fromPath(params.indel_mapping_file)
-    .ifEmpty { exit 1, "indel mapping file not found: ${params.indel_mapping_file}" }
-    .set { indel_mapping_file_ch }
-
-Channel
     .fromPath(params.target_ref)
     .ifEmpty { exit 1, "CrossMap.py target reference genome file: ${params.target_ref}" } 
     .into { target_ref_ch; target_ref_ch2; target_ref_ch3 }
