@@ -88,7 +88,7 @@ Channel
 Channel
     .fromPath(params.target_ref)
     .ifEmpty { exit 1, "CrossMap.py target reference genome file: ${params.target_ref}" } 
-    .into { target_ref_ch; target_ref_ch2 }
+    .into { target_ref_ch; target_ref_ch2; target_ref_ch3 }
 
 Channel
     .fromPath(params.annotation_vcf_file)
@@ -188,26 +188,9 @@ process sort_bed{
     """
 }
 
-process plink_fix_indels{
-    input:
-    set file(study_name_bed), file(study_name_bim), file(study_name_fam) from sorted_genotypes_hg38_ch
-    file indel_mapping_file from indel_mapping_file_ch
-
-    output:
-    tuple file("mapped_indels.bed"), file("mapped_indels.bim"), file("mapped_indels.fam") into indel_fix_genotypes_hg38_ch
-
-    script:
-    """
-    plink2 --bfile ${study_name_bed.simpleName} \
-    --update-alleles ${indel_mapping_file} \
-    --update-map ${indel_mapping_file} 6 \
-    --out mapped_indels --make-bed
-    """
-}
-
 process plink_to_vcf{
     input:
-    set file(study_name_bed), file(study_name_bim), file(study_name_fam) from indel_fix_genotypes_hg38_ch
+    set file(study_name_bed), file(study_name_bim), file(study_name_fam) from sorted_genotypes_hg38_ch
 
     output:
     file "sorted_hg38.vcf" into sorted_hg38_vcf_ch
@@ -215,6 +198,21 @@ process plink_to_vcf{
     script:
     """
     plink2 --bfile ${study_name_bed.simpleName} --export vcf-4.2 id-paste=iid --chr 1-22 --out sorted_hg38
+    """
+}
+
+process fix_indels{
+    input:
+    file vcf from sorted_hg38_vcf_ch
+    file fasta from target_ref_ch3.collect()
+
+    output:
+    file "sorted_genotypes_hg38_indels.vcf" into indel_fix_genotypes_hg38_ch
+
+    script:
+    """
+    samtools faidx ${fasta}
+    python3 fixvcf.py -f ${fasta} -o sorted_genotypes_hg38_indels.vcf ${vcf}
     """
 }
 
