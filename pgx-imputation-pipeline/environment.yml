@@ -5,6 +5,7 @@ channels:
   - anaconda
   - defaults
 dependencies:
+  - bioconda::pysam=0.16.0.1
   - bioconda::tabix=0.2.6
   - bioconda::bcftools=1.10.2
   - bioconda::plink2=2.00a3.3
@@ -12,6 +13,7 @@ dependencies:
   - bioconda::vcftools=0.1.16
   - bioconda::crossmap=0.4.1
   - bioconda::java-jdk=8.0.112
+  - bioconda::samtools=1.6
   - conda-forge::r-dplyr=1.0.0
   - conda-forge::r-ggplot2=3.3.1
   - conda-forge::r-dmwr=0.4.1
