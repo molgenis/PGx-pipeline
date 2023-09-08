@@ -32,4 +32,5 @@ ${nextflowPath} run ${pipelineRoot}/pgx-imputation-pipeline/main.nf \
 --output_name ${outputName} \
 --outdir ${imputationOutputDir} \
 -profile singularity \
+-work-dir work2 \
 -resume
