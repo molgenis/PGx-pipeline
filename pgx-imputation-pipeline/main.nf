@@ -2,11 +2,11 @@ def helpMessage() {
     log.info"""
     =======================================================
                                               ,--./,-.
-              ___     __   __   __   ___     /,-._.--~\'
-        |\\ | |__  __ /  ` /  \\ |__) |__         }  {
-        | \\| |       \\__, \\__/ |  \\ |___     \\`-._,-`-,
+           ___     __    __    __   ___     /,-._.--~\'
+    |\\ | |__  __ /  `  /  \\ |__) |__         }  {
+    | \\| |       \\__, \\__/ |  \\|___     \\`-._,-`-,
                                               `._,._,\'
-     eqtlgenimpute v${workflow.manifest.version}
+    eqtlgenimpute v${workflow.manifest.version}
     =======================================================
     Usage:
     The typical command for running the pipeline is as follows:
@@ -207,7 +207,7 @@ process fix_indels{
     script:
     """
     samtools faidx ${fasta}
-    python3 fixvcf.py -f ${fasta} -o sorted_genotypes_hg38_indels.vcf ${vcf}
+    fixvcf.py -f ${fasta} -o sorted_genotypes_hg38_indels.vcf ${vcf}
     """
 }
 
