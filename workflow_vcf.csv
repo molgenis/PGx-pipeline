@@ -1,0 +1,7 @@
+step,protocol,dependencies
+gtc_to_vcf,./protocols/gtc_to_vcf.sh,
+vcf_to_plink,./protocols/vcf_to_plink.sh,gtc_to_vcf
+split_per_chromosome,protocols/split_per_chromosome.sh,vcf_to_plink
+phasing,protocols/phasing.sh,split_per_chromosome
+imputation,protocols/imputation.sh,phasing
+merge_chromosomes,protocols/merge_chromosomes.sh,imputation

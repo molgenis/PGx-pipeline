@@ -1,5 +1,10 @@
 step,protocol,dependencies
-SplitPerChromosome,./protocols/SplitPerChromosome.sh,
-Phasing,./protocols/Phasing.sh,SplitPerChromosome
-Imputation,./protocols/Imputation.sh,Phasing
-MergeOutput,./protocols/MergeOutput.sh,MergeOutput
+create_final_report,protocols/create_final_report.sh,
+merge_final_reports,protocols/merge_final_reports.sh,create_final_report
+final_report_to_opticall,protocols/final_report_to_opticall.sh,merge_final_reports
+opticall,protocols/opticall.sh,final_report_to_opticall
+opticall_to_oxfordfile,protocols/opticall_to_oxfordfile.sh,opticall
+autosomal_quality_control,protocols/autosomal_quality_control.sh,opticall_to_oxfordfile
+phasing,protocols/phasing.sh,autosomal_quality_control
+imputation,protocols/imputation.sh,phasing
+merge_chromosomes,protocols/merge_chromosomes.sh,imputation
