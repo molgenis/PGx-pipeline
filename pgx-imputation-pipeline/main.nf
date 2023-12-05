@@ -335,8 +335,6 @@ process minimac_imputation{
     script:
     // Start minimac
     """
-    tabix ${vcf}
-
     minimac4 --refHaps chr${chromosome}.m3vcf.gz \
     --haps ${vcf} \
     --chr ${chromosome} \
