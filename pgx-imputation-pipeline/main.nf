@@ -317,7 +317,7 @@ process eagle_prephasing{
     --numThreads=${task.cpus} \
     --noImpMissing
 
-    tabix chr${chromosome}.phased.vcf.gz.tbi
+    tabix chr${chromosome}.phased.vcf.gz
     """
 }
 
