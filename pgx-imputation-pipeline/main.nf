@@ -295,13 +295,16 @@ process split_by_chr{
 }
 
 process eagle_prephasing{
+    publishDir "${params.outdir}/phasing", mode: 'copy',
+        saveAs: {filename -> if (filename.indexOf(".vcf.gz") > 0 | filename.indexOf(".vcf.gz.tbi") > 0) filename else null }
+
     input:
     tuple chromosome, file(vcf) from individual_chromosomes
     file genetic_map from genetic_map_ch.collect()
     file phasing_reference from phasing_ref_ch.collect()
 
     output:
-    tuple chromosome, file("chr${chromosome}.phased.vcf.gz") into phased_vcf_cf
+    tuple chromosome, file("chr${chromosome}.phased.vcf.gz"), file("chr${chromosome}.phased.vcf.gz.tbi") into phased_vcf_cf
 
     script:
     """
@@ -313,6 +316,8 @@ process eagle_prephasing{
     --outPrefix=chr${chromosome}.phased \
     --numThreads=${task.cpus} \
     --noImpMissing
+
+    tabix chr${chromosome}.phased.vcf.gz.tbi
     """
 }
 
@@ -320,7 +325,7 @@ process minimac_imputation{
     publishDir "${params.outdir}/postimpute/", mode: 'copy', pattern: "*.dose.vcf.gz"
 
     input:
-    tuple chromosome, file(vcf), chrom, start, end, name from phased_vcf_cf.cross(bed_ranges).map { crossbed -> crossbed.flatten() }
+    tuple chromosome, file(vcf), file(index), chrom, start, end, name from phased_vcf_cf.cross(bed_ranges).map { crossbed -> crossbed.flatten() }
     file imputation_reference from imputation_ref_ch.collect()
     val flank_size from params.imputation_flank_size
 
