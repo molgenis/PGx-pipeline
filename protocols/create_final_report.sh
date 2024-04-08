@@ -25,4 +25,4 @@ python ${pipelineRoot}/scripts/gtc_final_report.py \
 --gtc_directory "${gtcDataDir}/${SentrixBarcode_A}/" \
 --output_file "${arrayFinalReport}"
 
-#gzip "${arrayFinalReport}"
+gzip "${arrayFinalReport}"

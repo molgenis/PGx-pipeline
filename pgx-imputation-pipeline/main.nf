@@ -165,7 +165,7 @@ process crossmap{
     awk '{print \$7}' crossmap_input.bed | sort > input_ids.txt
     awk '{print \$7}' crossmap_output.bed | sort > output_ids.txt
     comm -23 input_ids.txt output_ids.txt | awk '{split(\$0,a,"___"); print a[1]}' > excluded_ids.txt
-    plink2 --bfile ${study_name_bed.simpleName} --exclude excluded_ids.txt --make-bed --output-chr MT --out crossmapped_plink
+    plink2 --bfile ${study_name_bed.simpleName} --exclude excluded_ids.txt --make-bed --output-chr MT --out crossmapped_plink --keep-allele-order
     awk -F'\t' 'BEGIN {OFS=FS} {print \$1,\$4,0,\$2,\$5,\$6}' crossmap_output.bed > crossmapped_plink.bim
     """
 }

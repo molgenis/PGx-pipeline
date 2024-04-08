@@ -27,6 +27,5 @@ python ${asterixRoot}/src/main/python/cnvcaller/core.py call \
   --variants-prefix "${correctiveVariantsOutputDir}" \
   --out "${cnvOutDir}" \
   --input "${arrayStagedIntensities[@]}" \
-  --correction "${cnvBatchCorrectionPath}" \
   --cluster-file "${cnvBatchCorrectionPath}" \
   --config ${asterixRoot}/src/main/python/cnvcaller/conf/config.yml

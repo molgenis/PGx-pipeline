@@ -27,4 +27,4 @@ python -u ${asterixRoot}/src/main/python/cnvcaller/core.py fit \
   --variants-prefix "${correctiveVariantsOutputDir}" \
   --out "${cnvOutDir}" \
   --input "${arrayStagedIntensities[@]}" \
-  --config ${asterixRoot}/src/main/python/cnvcaller/conf/config.yml
+  --config "${cnvConfig}"
