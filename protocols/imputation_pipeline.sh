@@ -19,6 +19,7 @@ module load ${javaVersion}
 
 # Command
 ${nextflowPath} run ${pipelineRoot}/pgx-imputation-pipeline/main.nf \
+--samplesheet ${samplesheet} \
 --bfile ${concatenatedGenotypesOutputDir}/chr_all \
 --target_ref ${imputationPipelineReferencePath}/hg38/genome_reference/Homo_sapiens.GRCh38.dna.primary_assembly.fa \
 --ref_panel_hg38 ${imputationPipelineReferencePath}/hg38/harmonizing_reference/30x-GRCh38_NoSamplesSorted \

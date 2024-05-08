@@ -21,6 +21,7 @@ grep "CYP2D6" ${pgxGenesBed38Flanked} > "cyp2d6Bed38Flanked.bed"
 
 # Command
 ${nextflowPath} run ${pipelineRoot}/pgx-imputation-pipeline/main.nf \
+--samplesheet ${samplesheet} \
 --bfile ${cnvOutDir}.integrated_genotypes_filtered/chr_22 \
 --target_ref ${imputationPipelineReferencePath}/hg38/genome_reference/Homo_sapiens.GRCh38.dna.primary_assembly.fa \
 --ref_panel_hg38 ${imputationPipelineReferencePath}/hg38/harmonizing_reference/30x-GRCh38_NoSamplesSorted \
