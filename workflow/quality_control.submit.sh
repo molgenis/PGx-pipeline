@@ -23,7 +23,7 @@ echo ${protocol}
 
 # Extract all values for which want to execute a job
 
-declare -a arrayVariable=($(seq 1 22 ) "X")
+declare -a arrayVariable=($(seq 1 22 ))
 
 echo ${arrayVariable[*]}
 # Number of tasks to execute

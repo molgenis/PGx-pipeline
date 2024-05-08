@@ -28,4 +28,4 @@ python ${asterixRoot}/src/main/python/cnvcaller/core.py call \
   --out "${cnvOutDir}" \
   --input "${arrayStagedIntensities[@]}" \
   --cluster-file "${cnvBatchCorrectionPath}" \
-  --config ${asterixRoot}/src/main/python/cnvcaller/conf/config.yml
+  --config "${cnvConfig}"

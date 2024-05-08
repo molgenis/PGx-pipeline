@@ -4,6 +4,7 @@ set -u
 ml ${plink2Version}
 
 mkdir -p $(dirname ${genotypesPlinkPrefix})
+mkdir -p $(dirname ${sampleListPrefix})
 
 plink2 --data ${genotypesOxfordPrefix} 'ref-first' \
 --extract ${variantsPassedQualityControl} \

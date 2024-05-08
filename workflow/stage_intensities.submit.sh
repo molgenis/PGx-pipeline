@@ -50,7 +50,7 @@ for job_array_index in "${!arrayVariable[@]}"; do
   echo "# Parameter file for array index ${job_array_index}" > ${jobdir}/params.sh
   echo "jobName=${jobName}" >> ${jobdir}/params.sh
   echo "SentrixBarcode_A=${SentrixBarcode_A}" >> ${jobdir}/params.sh
-  echo 'arrayFinalReport=${finalReportsDir}/process_gtc_${SentrixBarcode_A}_finalreport.txt' >> ${jobdir}/params.sh
+  echo 'arrayFinalReport=${finalReportsDir}/process_gtc_${SentrixBarcode_A}_finalreport.txt.gz' >> ${jobdir}/params.sh
   echo 'arrayStagedIntensities=${stagedIntensities}/${jobName}_${SentrixBarcode_A}_intensities.pkl' >> ${jobdir}/params.sh
 
   # make parameter file
