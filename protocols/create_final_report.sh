@@ -19,10 +19,12 @@ source ${pythonEnvironment}/bin/activate
 
 mkdir -p ${finalReportsDir}
 
+rm -f "${arrayFinalReport}"
+
 python ${pipelineRoot}/scripts/gtc_final_report.py \
 --manifest "${bpmFile}" \
 --samplesheet "${samplesheet}" \
 --gtc_directory "${gtcDataDir}/${SentrixBarcode_A}/" \
 --output_file "${arrayFinalReport}"
 
-gzip "${arrayFinalReport}"
+gzip -f "${arrayFinalReport}"

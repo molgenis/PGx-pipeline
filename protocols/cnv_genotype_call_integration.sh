@@ -17,7 +17,7 @@ plink2 --bfile ${concatenatedGenotypesOutputDir}/chr_all \
 
 ml ${plinkVersion}
 
-mkdir ${cnvOutDir}.integrated_genotypes_filtered
+mkdir -p ${cnvOutDir}.integrated_genotypes_filtered
 
 plink --bfile chr_22_filtered \
 --bmerge ${cnvOutDir}.reweighed_b_dosage.bed ${cnvOutDir}.reweighed_b_dosage.bim ${cnvOutDir}.reweighed_b_dosage.fam \

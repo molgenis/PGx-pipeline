@@ -19,6 +19,8 @@ source ${pythonEnvironment}/bin/activate
 
 mkdir -p ${stagedIntensities}
 
+rm -f "${arrayStagedIntensities}"
+
 python ${asterixRoot}/src/main/python/cnvcaller/core.py data \
   --bead-pool-manifest "${bpmFile}" \
   --sample-list "${sampleListPrefix}.samples.txt" \
