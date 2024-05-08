@@ -48,6 +48,13 @@ if( !(workflow.runName ==~ /[a-z]+_[a-z]+/) ){
   custom_runName = workflow.runName
 }
 
+Channel
+    .fromPath(params.samplesheet)
+    .splitCsv(header: true, sep: ',')
+    .filter { sample -> sample.pipeline == "diagnostics" }
+    .map { sample -> sample.sample_ID }
+    .collectFile(name: 'target_samples.txt', newLine: true)
+    .into { target_samples_ch }
 
 // Define input channels
 Channel
@@ -165,8 +172,7 @@ process crossmap{
     awk '{print \$7}' crossmap_input.bed | sort > input_ids.txt
     awk '{print \$7}' crossmap_output.bed | sort > output_ids.txt
     comm -23 input_ids.txt output_ids.txt | awk '{split(\$0,a,"___"); print a[1]}' > excluded_ids.txt
-    plink2 --bfile ${study_name_bed.simpleName} --exclude excluded_ids.txt --make-bed --output-chr MT --out crossmapped_plink --keep-allele-order
-    awk -F'\t' 'BEGIN {OFS=FS} {print \$1,\$4,0,\$2,\$5,\$6}' crossmap_output.bed > crossmapped_plink.bim
+    plink2 --bfile ${study_name_bed.simpleName} --exclude excluded_ids.txt --make-bed --output-chr MT --out crossmapped_plink --keep-allele-order --update-map crossmap_output.bed 2 4
     """
 }
 
@@ -371,8 +377,8 @@ process index_imputation {
 }
 
 process annotate_imputation {
-    publishDir "${params.outdir}/annotated/", mode: 'copy', pattern: "*.annotated.vcf.gz"
-    publishDir "${params.outdir}/annotated/", mode: 'copy', pattern: "*.annotated.vcf.gz.tbi"
+    publishDir "${params.outdir}/annotated/", mode: 'copy', pattern: "*.annotated.bar.vcf.gz"
+    publishDir "${params.outdir}/annotated/", mode: 'copy', pattern: "*.annotated.bar.vcf.gz.tbi"
 
     input:
     tuple chromosome, start, end, name, file(vcf), file(index) from imputed_vcf_tbi_cf
@@ -391,9 +397,31 @@ process annotate_imputation {
     bcftools annotate removed_af_info.vcf.gz \
     --annotations ${annotation_vcf} \
     --columns "INFO,ID" \
-    --output range_${chromosome}_${start}-${end}_${name}.annotated.vcf.gz \
-    --output-type 'z'
+    --output-type 'v' | \
+    sed 's/\.\/\./.|./g' | \
+    bgzip -c range_${chromosome}_${start}-${end}_${name}.annotated.bar.vcf.gz
 
-    tabix range_${chromosome}_${start}-${end}_${name}.annotated.vcf.gz
+    tabix range_${chromosome}_${start}-${end}_${name}.annotated.bar.vcf.gz
+    """
+}
+
+process split_target_dataset {
+    publishDir "${params.outdir}/target/", mode: 'copy', pattern: "*.annotated.bar.target.vcf.gz"
+    publishDir "${params.outdir}/target/", mode: 'copy', pattern: "*.annotated.bar.target.vcf.gz.tbi"
+
+    input:
+    tuple chromosome, start, end, name, file(vcf), file(index) from annotated_vcf_tbi_cf
+    path target_samples_ch
+
+    output:
+    tuple chromosome, start, end, name, file("range_*.target.vcf.gz"), file("range_*.target.vcf.gz.tbi") into split_vcf_tbi_cf
+
+    script:
+    """
+    bcftools view --samples-file ${target_samples_ch} ${vcf} --output-type 'v' |
+    bcftools +fill-tags --output-type 'v' -- -t AF\
+    bgzip -c range_${chromosome}_${start}-${end}_${name}.annotated.bar.target.vcf.gz
+
+    tabix range_${chromosome}_${start}-${end}_${name}.annotated.bar.target.vcf.gz
     """
 }
