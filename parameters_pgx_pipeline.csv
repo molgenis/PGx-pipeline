@@ -1,0 +1,25 @@
+#Tools
+molgenisStandInScript,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/PGx-pipeline/molgenis_stand_in_script.sh
+pythonVersion,Python/3.9.1-GCCcore-7.3.0-bare
+pythonEnvironment,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/virtualenv/3.9.1-GCCcore-7.3.0-bare
+#computeVersion,Molgenis-Compute/v19.01.1-Java-11-LTS
+#pennCNVVersion,PennCNV/1.0.4-foss-2018b
+optiCallExecutable,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/tss101-opticall-090d8ed4136a/opticall/opticall
+RPlusVersion,RPlus/4.0.3-foss-2018b-v21.01.1
+plinkVersion,PLINK/1.9-beta6-20190617
+plink2Version,PLINK/2.0-alpha2-20191006
+htslibVersion,HTSlib/1.11-GCCcore-7.3.0
+boostVersion,Boost/1.67.0-foss-2018b
+shapeitExecutable,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/shapeit4-4.2.1/bin/shapeit4.2
+
+#References
+variantsPassedValidation,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/data/passport_generation
+
+#Imputation pipeline
+javaVersion,Java/11-LTS
+nextflowPath,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/tools/nextflow
+imputationPipelineReferencePath,/groups/umcg-wijmenga/tmp01/projects/pgx-pipeline/data/processed/imputationreference
+outputName,genimpute_phased_imputed
+
+#Settings
+imputationFlankSize,1000000
