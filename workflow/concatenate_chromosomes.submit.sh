@@ -23,7 +23,7 @@ echo ${protocol}
 
 # Extract all values for which want to execute a job
 
-declare -a arrayVariable=($(cut -f1 -d$'\t' ${pgxGenesBed37} | sort | uniq ))
+declare -a arrayVariable=($(seq 1 22 ))
 
 echo ${arrayVariable[@]}
 # Number of tasks to execute
