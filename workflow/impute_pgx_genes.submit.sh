@@ -32,12 +32,6 @@ touch "${workdir}/${jobName}_${nTasks}/params.sh"
 
 echo "starting: ${nTasks}"
 
-#SLURM_JOB_NAME=${jobName}
-#SLURM_ARRAY_TASK_ID=0
-#cd ${workdir}
-#source ${molgenisStandInScript}
-#cd -
-
 # Now start the slurm array job
 sbatch \
   -J "${jobName}" \
