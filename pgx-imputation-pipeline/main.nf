@@ -52,9 +52,9 @@ Channel
     .fromPath(params.samplesheet)
     .splitCsv(header: true, sep: ',')
     .filter { sample -> sample.pipeline == "diagnostics" }
-    .map { sample -> sample.sample_ID }
-    .collectFile(name: 'target_samples.txt', newLine: true)
-    .into { target_samples_ch }
+    .map { sample -> sample.Sample_ID }
+    .collectFile(name: 'target_samples.txt', newLine: true).collect().view()
+    .set { target_samples_ch }
 
 // Define input channels
 Channel
@@ -387,22 +387,17 @@ process annotate_imputation {
     output:
     tuple chromosome, start, end, name, file("range_*.vcf.gz"), file("range_*.vcf.gz.tbi") into annotated_vcf_tbi_cf
 
-    script:
-    """
-    tabix ${annotation_vcf}
+    shell:
+    '''
+    tabix !{annotation_vcf}
 
-    bcftools annotate ${vcf} -x "INFO/AF" --set-id '%CHROM:%POS:%REF:%FIRST_ALT' -O z -o removed_af_info.vcf.gz
+    bcftools annotate !{vcf} -x "INFO/AF" --set-id '%CHROM:%POS:%REF:%FIRST_ALT' -O z -o removed_af_info.vcf.gz
     tabix removed_af_info.vcf.gz
-    
-    bcftools annotate removed_af_info.vcf.gz \
-    --annotations ${annotation_vcf} \
-    --columns "INFO,ID" \
-    --output-type 'v' | \
-    sed 's/\.\/\./.|./g' | \
-    bgzip -c range_${chromosome}_${start}-${end}_${name}.annotated.bar.vcf.gz
+    bcftools annotate --annotations !{annotation_vcf} --columns "INFO,ID" --output-type 'v' removed_af_info.vcf.gz > removed_af_info.TMP.vcf.gz 
+    bcftools +setGT removed_af_info.TMP.vcf.gz -- -t . -n p | bgzip -c > range_!{chromosome}_!{start}-!{end}_!{name}.annotated.bar.vcf.gz
 
-    tabix range_${chromosome}_${start}-${end}_${name}.annotated.bar.vcf.gz
-    """
+    tabix range_!{chromosome}_!{start}-!{end}_!{name}.annotated.bar.vcf.gz
+    '''
 }
 
 process split_target_dataset {
@@ -418,10 +413,10 @@ process split_target_dataset {
 
     script:
     """
-    bcftools view --samples-file ${target_samples_ch} ${vcf} --output-type 'v' |
-    bcftools +fill-tags --output-type 'v' -- -t AF\
-    bgzip -c range_${chromosome}_${start}-${end}_${name}.annotated.bar.target.vcf.gz
-
+    bcftools view --samples-file ${target_samples_ch} --force-samples ${vcf} --output-type 'v' | \
+    bcftools +fill-tags --output-type 'v' -- -t AF | \
+    bgzip -c > range_${chromosome}_${start}-${end}_${name}.annotated.bar.target.vcf.gz
+    
     tabix range_${chromosome}_${start}-${end}_${name}.annotated.bar.target.vcf.gz
     """
 }

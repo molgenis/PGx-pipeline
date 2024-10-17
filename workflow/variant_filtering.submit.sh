@@ -14,8 +14,8 @@ parameters=$(realpath ${parameters})
 # Source all parameters
 source ${parameters}
 # Define the protocol to run
-protocol="${pipelineRoot}/protocols/concatenate_chromosomes.sh"
-jobName="concatenate_chromosomes"
+protocol="${pipelineRoot}/protocols/variant_filtering.sh"
+jobName="variant_filtering"
 
 echo ${protocol}
 
@@ -25,27 +25,33 @@ echo ${protocol}
 
 declare -a arrayVariable=($(seq 1 22 ))
 
-echo ${arrayVariable[@]}
+echo ${arrayVariable[*]}
 # Number of tasks to execute
 
-nTasks=0
+nTasks=$(expr ${#arrayVariable[@]} - 1)
 
 echo "starting: ${nTasks}"
 
 # For each of the tasks, write a param.sh file
 for job_array_index in "${!arrayVariable[@]}"; do
   # Construct the job dir as follows
+  jobdir="${workdir}/${jobName}_${job_array_index}/"
+
+  echo $jobdir
+
+  # Make the job dir
+  mkdir -p ${jobdir}
+
   chromosomeNumber="${arrayVariable[$job_array_index]}"
+
   # Write parameter file to the job dir
-  eval genotypesPlinkPrefix=${_genotypesPlinkPrefix}
-  genotypesPlinkPrefixArray+=($genotypesPlinkPrefix)
-  # make parameter file
+  echo "# Parameter file for array index ${job_array_index}" > ${jobdir}/params.sh
+  echo "jobName=${jobName}" >> ${jobdir}/params.sh
+  echo "chromosomeNumber=${chromosomeNumber}" >> ${jobdir}/params.sh
+  echo "genotypesOxfordPrefix=${_genotypesOxfordPrefix}" >> ${jobdir}/params.sh
+  echo "genotypesPlinkPrefix=${_genotypesPlinkPrefix}" >> ${jobdir}/params.sh
+
 done
-
-mkdir -p "${workdir}/${jobName}_0"
-
-mkdir -p "${concatenatedGenotypesOutputDir}"
-printf '%s=( %s)\n' "genotypesPlinkPrefixArray" "$(printf '%q ' "${genotypesPlinkPrefixArray[@]}")" > ${workdir}/${jobName}_0/params.sh
 
 # Now start the slurm array job
 sbatch \
@@ -54,7 +60,7 @@ sbatch \
   -o "${workdir}/%x_%a/slurm.out" \
   -e "${workdir}/%x_%a/slurm.err" \
   -a 0-${nTasks} \
-  --time 00:59:00 \
+  --time 05:59:00 \
   --cpus-per-task 2 \
   --mem 8gb \
   --nodes 1 \

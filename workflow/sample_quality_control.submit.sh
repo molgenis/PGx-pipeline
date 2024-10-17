@@ -14,8 +14,8 @@ parameters=$(realpath ${parameters})
 # Source all parameters
 source ${parameters}
 # Define the protocol to run
-protocol="${pipelineRoot}/protocols/concatenate_chromosomes.sh"
-jobName="concatenate_chromosomes"
+protocol="${pipelineRoot}/protocols/sample_filtering.sh"
+jobName="sample_quality_control"
 
 echo ${protocol}
 
@@ -23,29 +23,20 @@ echo ${protocol}
 
 # Extract all values for which want to execute a job
 
-declare -a arrayVariable=($(seq 1 22 ))
-
-echo ${arrayVariable[@]}
 # Number of tasks to execute
 
 nTasks=0
 
+mkdir -p "${workdir}/${jobName}_${nTasks}"
+touch "${workdir}/${jobName}_${nTasks}/params.sh"
+
 echo "starting: ${nTasks}"
 
-# For each of the tasks, write a param.sh file
-for job_array_index in "${!arrayVariable[@]}"; do
-  # Construct the job dir as follows
-  chromosomeNumber="${arrayVariable[$job_array_index]}"
-  # Write parameter file to the job dir
-  eval genotypesPlinkPrefix=${_genotypesPlinkPrefix}
-  genotypesPlinkPrefixArray+=($genotypesPlinkPrefix)
-  # make parameter file
-done
-
-mkdir -p "${workdir}/${jobName}_0"
-
-mkdir -p "${concatenatedGenotypesOutputDir}"
-printf '%s=( %s)\n' "genotypesPlinkPrefixArray" "$(printf '%q ' "${genotypesPlinkPrefixArray[@]}")" > ${workdir}/${jobName}_0/params.sh
+#SLURM_JOB_NAME=${jobName}
+#SLURM_ARRAY_TASK_ID=0
+#cd ${workdir}
+#source ${molgenisStandInScript}
+#cd -
 
 # Now start the slurm array job
 sbatch \
