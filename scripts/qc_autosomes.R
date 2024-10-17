@@ -76,7 +76,7 @@ main <- function(argv = NULL) {
   cat("Heterogeneity File: ", heterozygosity, "\n")
   cat("Output Prefix: ", out_prefix, "\n")
   cat("Missingness Threshold: ", missingness_threshold, "\n")
-  cat("Heterogeneity Threshold (in SD): ", heterogeneity_threshold, "\n")
+  cat("Heterozygosity Threshold (in SD): ", heterozygosity_threshold, "\n")
 
   # Perform method
   het <- fread(heterozygosity, header = TRUE, keepLeadingZeros = TRUE, colClasses = list(character = c(1, 2)))

@@ -21,8 +21,9 @@ module load BCFtools
 
 mkdir -p ${cnvOutDir}.target
 
-bcftools query -l ${imputationOutputDir}/target/range_*_CYP2D6.annotated.bar.target.vcf.gz > target_sample_list.txt
-awk 'NR==FNR { ids[$1]; next } $1 in ids' target_sample_list.txt ${cnvOutDir}.combined_cnv_status.txt > ${cnvOutDir}.target/cnv_status.txt
+bcftools query -l ${imputationOutputDir}/target/range_*_CYP2C9.annotated.bar.target.vcf.gz > target_sample_list.txt
+head -n 1 ${cnvOutDir}.combined_cnv_status.txt > ${cnvOutDir}.target/cnv_status.txt
+awk 'NR==FNR { ids[$1]; next } $1 in ids' target_sample_list.txt ${cnvOutDir}.combined_cnv_status.txt >> ${cnvOutDir}.target/cnv_status.txt
 
 mkdir -p ${asterixOutputDir}/star_alleles/
 mkdir -p ${asterixOutputDir}/pheno_out/

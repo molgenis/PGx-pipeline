@@ -17,4 +17,4 @@ Rscript ${pipelineRoot}/scripts/qc_autosomes.R \
 plink2 --bfile ${concatenatedGenotypesOutputDir}/plink_dataset_to_qc --keep qc_out.samples_passed_qc.txt \
 --make-bed --out ${concatenatedGenotypesOutputDir}/chr_all
 
-awk 'BEGIN{FS="\t"; OFS=FS}{print $2}' ${concatenatedGenotypesOutputDir}/chr_all > ${sampleListPrefix}.samples.txt
+awk 'BEGIN{FS="\t"; OFS=FS}{print $2}' ${concatenatedGenotypesOutputDir}/chr_all.fam > ${sampleListPrefix}.samples.txt

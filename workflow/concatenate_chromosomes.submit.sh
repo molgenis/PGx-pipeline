@@ -54,7 +54,7 @@ sbatch \
   -o "${workdir}/%x_%a/slurm.out" \
   -e "${workdir}/%x_%a/slurm.err" \
   -a 0-${nTasks} \
-  --time 05:59:00 \
+  --time 00:59:00 \
   --cpus-per-task 2 \
   --mem 8gb \
   --nodes 1 \
