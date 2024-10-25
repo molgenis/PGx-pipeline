@@ -416,7 +416,7 @@ process split_target_dataset {
     bcftools view --samples-file ${target_samples_ch} --force-samples ${vcf} --output-type 'v' | \
     bcftools +fill-tags --output-type 'v' -- -t AF | \
     bgzip -c > range_${chromosome}_${start}-${end}_${name}.annotated.bar.target.vcf.gz
-    
+
     tabix range_${chromosome}_${start}-${end}_${name}.annotated.bar.target.vcf.gz
     """
 }
