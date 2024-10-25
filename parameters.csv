@@ -1,32 +1,57 @@
-########################################################################
-## General parameters for SLURM settings and cluster directory paths
-#
-queue,medium
-defaultInterpreter,#!/bin/bash
-stage,module load
-checkStage,module list
-WORKDIR,/groups/
-group,umcg-wijmenga
-tmp,tmp03
-root,${WORKDIR}${group}/${tmp}
-resDir,/groups/umcg-weersma/tmp03/umcg-hbrugge
-toolDir,/apps/software/
-projectDir,${root}/umcg-hbrugge/pgx-pipeline
-jdkVersion,1.8.0_25
-### SplitPerChromsome
-splitChromInputDir,${projectDir}/input
-splitChromOutputDir,${projectDir}/1_splitChrom
-### Phasing
-shapeitVersion,shapeit/v2.r837-static
-phasingInputDir,${splitChromOutputDir}
-phasingOutputDir,${projectDir}/2_phaseing
-refDir,${resDir}/ibdReference/
-mapDir="/gcc/resources/b37/imputation/1000G/ALL_1000G_phase1integrated_v3_impute"
-### Imputation
-impute2Version,IMPUTE2/2.3.0_x86_64_static
-imputationInputDir,${phasingOutputDir}
-imputationOutputDir,${projectDir}/3_imputation
-humanGtf,/apps/data/ftp.ensembl.org/pub/release-75/gtf/homo_sapiens/Homo_sapiens.GRCh37.75.gtf
-hrcRefPanel,
-### MergeOutput
-matrixDir,${projectDir}matrix/
+# Defaults
+dataDir,/apps/data/
+pgxDataDir,${dataDir}/PGx/
+optiCallVersion,opticall/0.8.1-${toolChain_min}
+plinkVersion,PLINK/1.9-beta6-20190617
+plink2Version,PLINK/2.0-alpha4.5-20230813
+shapeItVersion,SHAPEIT4/4.2.2-${toolChain_max}
+asterixVersion,asterix/1.0
+computeVersion,20.03.1-Java-11-LTS
+gapVersion,GAP/2.8.0
+pythonVersion,Python/3.9.1-${toolChain_min}-bare
+boostVersion,Boost/1.79.0-GCC-11.3.0
+htslibVersion,HTSlib/1.19.1-${toolChain_min}
+RPlusVersion,RPlus/4.2.1-foss-2022a-v22.12.1
+nextflowVersion,nextflow/21.10.6-Java-11-LTS
+bcfToolsVersion,BCFtools/1.19-${toolChain_min}
+javaVersion,Java/11-LTS
+ngsUtilsVersion,ngs-utils/24.03.1
+
+pythonEnvironment,/groups/umcg-pgx/tmp07/pythonVirtualEnv/
+
+variantsPassedQualityControl,${pgxDataDir}/GSAMD-24v3/passed_variants_qc.txt
+imputationPipelineReferencePath,${pgxDataDir}/processed/imputationreference
+bpmFile,${dataDir}/GSAarray/GSAMD-24v3-0-EA_20034606_A1.bpm
+cnvConfig,${pgxDataDir}/cyp2d6/config.yml
+cnvBedFile,${pgxDataDir}/cyp2d6/cyp2d6.bed
+pgxGenesBed37,${pgxDataDir}/pgx-genes_GRCh37.bed
+pgxGenesBed38,${pgxDataDir}/pgx-genes_GRCh38.bed
+pgxGenesBed38Flanked,${pgxDataDir}/pgx-genes_GRCh38_1Mb-flanks.bed
+gnomadAnnotationFile,${pgxDataDir}/gnomad/analyses/concatenated_pgx_genes/out/pgx_genes_gnomad_chromosomes_renamed.vcf.gz
+correctiveVariantsOutputDir,${pgxDataDir}/analyses/select_corrective_variants/out
+asterixDefaultJson,${pgxDataDir}/analyses/asterix/hl7_asterix_default.json
+translationTableHaploToCiDir,${pgxDataDir}/analyses/translation_tables/MDv3/haplo_to_ci/20240611/
+translationTableSnpToHaploDir,${pgxDataDir}/analyses/translation_tables/MDv3/snp_to_haplo/20240611/
+outputName,genimpute_phased_imputed
+imputationFlankSize,1000000
+cnvBatchCorrectionPath,${pgxDataDir}/analyses/cyp2d6_cnv_calling/20240730/out
+tmpDataDir,${groupDir}/${tmpName}/
+projectDir,${tmpDataDir}/projects/${project}/
+projectJobsDir,${projectDir}/jobs/
+intermediateDir,${tmpDataDir}/tmp/${project}/
+rawdataPath,${tmpDataDir}/rawdata/
+outdir,${intermediateDir}/analyses/
+resultsDir,${projectDir}/results/
+finalReportsDir,${outdir}/final_reports/
+finalReportTxt,${finalReportsDir}/${SentrixBarcode_A}_finalreport.txt
+finalReport,${finalReportsDir}/${SentrixBarcode_A}_finalreport.txt.gz
+genotypesOxfordPrefix,${gtcDataDir}/results/oxford_gen_sample/chr_${chr}
+genotypesPlinkPrefix,${outdir}/qced_plink_files/chr_${chr}
+sampleListPrefix,${outdir}/quality_controlled_samples/sample_list
+concatenatedGenotypesOutputDir,${outdir}/concatenated_genotypes/
+stagedIntensitiesDir,${outdir}/staged_intensities/
+stagedIntensities,${stagedIntensitiesDir}/${SentrixBarcode_A}_intensities.pkl
+cnvOutDir,${outdir}/cyp2d6_cnv_calling/out
+gtcDataDir,${rawdataPath}/hematologie_research_data/${project}/
+imputationOutputDir,${outdir}/impute_pgx_genes/
+asterixOutputDir,${resultsDir}/asterix/
