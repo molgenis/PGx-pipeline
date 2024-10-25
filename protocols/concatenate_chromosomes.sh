@@ -18,5 +18,4 @@ module list
 
 printf "%s\n" "${genotypesPlinkPrefixArray[@]}" > files_to_merge.txt
 
-plink --merge-list files_to_merge.txt --make-bed --out ${concatenatedGenotypesOutputDir}/chr_all
-
+plink --merge-list files_to_merge.txt --make-bed --out ${concatenatedGenotypesOutputDir}/plink_dataset_to_qc
