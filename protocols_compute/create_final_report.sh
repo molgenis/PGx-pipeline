@@ -6,6 +6,7 @@
 #string gtcDataDir
 #string pgxVersion
 #string finalReportTxt
+#string finalReport
 #string samplesheet
 #string SentrixBarcode_A
 #string finalReportsDir
@@ -21,7 +22,7 @@ source "${pythonEnvironment}/bin/activate"
 
 mkdir -p "${finalReportsDir}"
 
-rm -f "${finalReport}"
+rm -f "${finalReportTxt}"
 
 python "${EBROOTPGX}/scripts/gtc_final_report.py" \
 --manifest "${bpmFile}" \
