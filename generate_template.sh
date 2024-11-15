@@ -61,8 +61,6 @@ samplesheet="${genScripts}/${project}.csv"
 
 mkdir -p "${groupDir}/${tmpDirectory}/projects/${project}/jobs"
 mkdir -p "${groupDir}/${tmpDirectory}/tmp/${project}/"
-mkdir -p "${groupDir}/${tmpDirectory}/projects/${project}/analyses/"
-mkdir -p "${groupDir}/${tmpDirectory}/projects/${project}/workdir/"
 
 ### Converting parameters to compute parameters
 echo "tmpName,${tmpDirectory}" > "${genScripts}/tmpdir_parameters.csv"
