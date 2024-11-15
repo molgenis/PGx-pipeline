@@ -98,3 +98,4 @@ rm -f 'jobs/'*bak*
 
 cd -
 
+echo "jobs can be found here: ${groupDir}/${tmpDirectory}/projects/${project}/jobs"
