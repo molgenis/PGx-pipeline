@@ -6,7 +6,6 @@
 #string gtcDataDir
 #string pgxVersion
 #string finalReportTxt
-#string finalReport
 #string samplesheet
 #string SentrixBarcode_A
 #string finalReportsDir
