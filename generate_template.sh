@@ -89,3 +89,12 @@ samplesheet=${samplesheet};\
 groupDir=${groupDir}" \
 -g \
 -weave
+
+cd "${groupDir}/${tmpDirectory}/projects/${project}/"
+## additional removing duplicate values in scripts 
+ml Perl
+perl "${EBROOTPGX}/scripts/RemoveDuplicatesCompute.pl" 'jobs/'*.sh
+rm -f 'jobs/'*bak*
+
+cd -
+
