@@ -23,8 +23,9 @@ module load "${bcfToolsVersion}"
 
 mkdir -p "${cnvOutDir}.target"
 
-bcftools query -l "${imputationOutputDir}/target/range_"*"_CYP2D6.annotated.bar.target.vcf.gz" > 'target_sample_list.txt'
-awk 'NR==FNR { ids[$1]; next } $1 in ids' 'target_sample_list.txt' "${cnvOutDir}.combined_cnv_status.txt" > "${cnvOutDir}.target/cnv_status.txt"
+bcftools query -l "${imputationOutputDir}/target/range_"*"_CYP2C9.annotated.bar.target.vcf.gz" > 'target_sample_list.txt'
+head -n 1 "${cnvOutDir}.combined_cnv_status.txt" > "${cnvOutDir}.target/cnv_status.txt"
+awk 'NR==FNR { ids[$1]; next } $1 in ids' 'target_sample_list.txt' "${cnvOutDir}.combined_cnv_status.txt" >> "${cnvOutDir}.target/cnv_status.txt"
 
 mkdir -p "${asterixOutputDir}/star_alleles/"
 mkdir -p "${asterixOutputDir}/pheno_out/"
@@ -37,6 +38,6 @@ java -jar "${EBROOTASTERIX}/asterix-0.10-SNAPSHOT.jar" \
         -haplo_pheno_table_dir  "${translationTableHaploToCiDir}" \
         -star_out               "${asterixOutputDir}/star_alleles/" \
         -pheno_out_dir          "${asterixOutputDir}/pheno_out/" \
-        -sample_matrix_out      "${asterixOutputDir}/sample_matrix" \
+        -sample_matrix_out      "${asterixOutputDir}/sample_matrix.csv" \
         -hl7_output_file        "${asterixOutputDir}/hl7_llnext_prelim.json" \
         -hl7_input_file         "${asterixDefaultJson}"
