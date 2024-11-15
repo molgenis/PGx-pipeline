@@ -42,5 +42,5 @@ done
 
 printf "%s\n" "${INPUTS[@]}" > "${intermediateDir}/files_to_merge.txt"
 
-plink --merge-list "${intermediateDir}/files_to_merge.txt" --make-bed --out "${concatenatedGenotypesOutputDir}/chr_all"
+plink --merge-list "${intermediateDir}/files_to_merge.txt" --make-bed --out "${concatenatedGenotypesOutputDir}/plink_dataset_to_qc"
 

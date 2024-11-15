@@ -21,7 +21,7 @@ source "${pythonEnvironment}/bin/activate"
 
 mkdir -p "${finalReportsDir}"
 
-rm -f "${finalReport}"
+rm -f "${finalReportTxt}"
 
 python "${EBROOTPGX}/scripts/gtc_final_report.py" \
 --manifest "${bpmFile}" \

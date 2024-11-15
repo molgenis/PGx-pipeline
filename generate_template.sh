@@ -61,8 +61,6 @@ samplesheet="${genScripts}/${project}.csv"
 
 mkdir -p "${groupDir}/${tmpDirectory}/projects/${project}/jobs"
 mkdir -p "${groupDir}/${tmpDirectory}/tmp/${project}/"
-mkdir -p "${groupDir}/${tmpDirectory}/projects/${project}/analyses/"
-mkdir -p "${groupDir}/${tmpDirectory}/projects/${project}/workdir/"
 
 ### Converting parameters to compute parameters
 echo "tmpName,${tmpDirectory}" > "${genScripts}/tmpdir_parameters.csv"
@@ -91,3 +89,13 @@ samplesheet=${samplesheet};\
 groupDir=${groupDir}" \
 -g \
 -weave
+
+cd "${groupDir}/${tmpDirectory}/projects/${project}/"
+## additional removing duplicate values in scripts 
+ml Perl
+perl "${EBROOTPGX}/scripts/RemoveDuplicatesCompute.pl" 'jobs/'*.sh
+rm -f 'jobs/'*bak*
+
+cd -
+
+echo "jobs can be found here: ${groupDir}/${tmpDirectory}/projects/${project}/jobs"

@@ -152,8 +152,6 @@ with open(args.output_file, "w") as output_handle:
                     sampleName = os.path.basename(gtc_file)[:-4]
             else:
                 sampleName = os.path.basename(gtc_file)[:-4]
-
-            output_handle.write(delim.join(
-                [name, sampleName, str(chrom), str(map_info), str(new_snp), str(ref_strand), str(source_strands),
-                 str(code2genotype[genotype]), str(Allele[:-1]), str(Allele[1:]), str(raw_x), str(raw_y), str(x_norm), str(y_norm),
-                 str(BAF), str(logratio), str(genotype_score), ref_strand_genotype, source_strand_genotype]) + "\n")
+            a1=Allele[:-1].decode("utf-8")
+            a2=Allele[1:].decode("utf-8")
+            output_handle.write(delim.join([name, sampleName, str(chrom) , str(map_info) , str(new_snp), str(ref_strand),str(source_strands), code2genotype[genotype] , a1 , a2 , str(raw_x), str(raw_y) ,str(x_norm), str(y_norm),str(BAF),str(logratio),str(genotype_score),ref_strand_genotype, source_strand_genotype]) + "\n")

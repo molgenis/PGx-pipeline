@@ -1,4 +1,4 @@
-#MOLGENIS walltime=23:59:00 mem=1gb nodes=1 ppn=4
+#MOLGENIS walltime=23:59:00 mem=20gb nodes=1 ppn=4
 
 #string javaVersion
 #string nextflowVersion
