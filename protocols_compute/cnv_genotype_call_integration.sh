@@ -27,5 +27,7 @@ ml "${plinkVersion}"
 mkdir -p "${cnvOutDir}.integrated_genotypes_filtered"
 
 plink --bfile 'chr_22_filtered' \
---bmerge "${cnvOutDir}.reweighed_b_dosage.bed" "${cnvOutDir}.reweighed_b_dosage.bim" "${cnvOutDir}.reweighed_b_dosage.fam" \
+--bmerge "${cnvOutDir}.reweighed_b_dosage.bed" \
+"${cnvOutDir}.reweighed_b_dosage.bim" \
+"${cnvOutDir}.reweighed_b_dosage.fam" \
 --make-bed --out "${cnvOutDir}.integrated_genotypes_filtered/chr_22"

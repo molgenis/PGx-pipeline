@@ -11,7 +11,7 @@ gapVersion,GAP/2.8.0
 pythonVersion,Python/3.9.1-${toolChain_min}-bare
 boostVersion,Boost/1.79.0-GCC-11.3.0
 htslibVersion,HTSlib/1.19.1-${toolChain_min}
-RPlusVersion,RPlus/4.2.1-foss-2022a-v22.12.1
+rVersion,R/4.2.2-foss-2022a
 nextflowVersion,nextflow/21.10.6-Java-11-LTS
 bcfToolsVersion,BCFtools/1.19-${toolChain_min}
 javaVersion,Java/11-LTS

@@ -2,7 +2,7 @@
 
 #string pgxVersion
 #string plink2Version
-#string RPlusVersion
+#string rVersion
 
 #string sampleListPrefix
 #string concatenatedGenotypesOutputDir
@@ -13,7 +13,7 @@ set -u
 
 module load "${pgxVersion}"
 module load "${plink2Version}"
-module load "${RPlusVersion}"
+module load "${rVersion}"
 #export R_LIBS_USER=${rLibsPath}
 
 sampleListPrefixFolder=$(dirname "${sampleListPrefix}")
