@@ -29,4 +29,3 @@ cd /groups/umcg-pgx//tmp07/projects/${PROJECT}/jobs
 bash submit.sh
 
 ```
-
