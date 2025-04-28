@@ -6,6 +6,8 @@
 #string asterixVersion
 #string bcfToolsVersion
 #string cnvOutDir
+#string resultsDir
+#string sampleListPrefix
 #string imputationOutputDir
 #string asterixOutputDir
 #string translationTableSnpToHaploDir
@@ -41,5 +43,11 @@ java -jar "${EBROOTASTERIX}/asterix-0.10-SNAPSHOT.jar" \
         -star_out               "${asterixOutputDir}/star_alleles/" \
         -pheno_out_dir          "${asterixOutputDir}/pheno_out/" \
         -sample_matrix_out      "${asterixOutputDir}/sample_matrix.csv" \
-        -hl7_output_file        "${asterixOutputDir}/hl7_llnext_prelim.json" \
+        -hl7_output_file        "${asterixOutputDir}/hl7_prelim.json" \
         -hl7_input_file         "${asterixDefaultJson}"
+
+cnvDir=$(dirname "${cnvOutDir}")
+qualControlledDir=$(dirname "${sampleListPrefix}")
+rsync -rv "${cnvDir}" "${resultsDir}"
+cp -rv "${imputationOutputDir}" "${resultsDir}"
+rsync -rv "${qualControlledDir}" "${resultsDir}"

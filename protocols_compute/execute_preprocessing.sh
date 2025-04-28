@@ -1,4 +1,4 @@
-#MOLGENIS walltime=02:00:00 mem=2gb ppn=1
+#MOLGENIS walltime=04:00:00 mem=2gb ppn=1
 #string gtcDataDir
 #string pgxVersion
 #string samplesheet
@@ -21,6 +21,9 @@ bash "${EBROOTGAP}/nextflow/run_researchWorkflow.sh" -s "${samplesheet}" -g "${g
 	echo "${EBROOTGAP}/nextflow/run_researchWorkflow.sh -s \"${samplesheet}\" -g gtcDir \"${gtcDataDir}\" -n \"${EBROOTGAP}/nextflow/main.nf\" -c 'yes' -r 'no'"
 	exit 1
 	}
+	
+	rsync -rv "${intermediateDir}/results" "${gtcDataDir}/"
+	
 echo "finished"
 
 cd -
