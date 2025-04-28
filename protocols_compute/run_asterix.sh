@@ -48,6 +48,6 @@ java -jar "${EBROOTASTERIX}/asterix-0.10-SNAPSHOT.jar" \
 
 cnvDir=$(dirname "${cnvOutDir}")
 qualControlledDir=$(dirname "${sampleListPrefix}")
-rsync -rv "${cnvDir}" "${resultsDir}"
-cp -rv "${imputationOutputDir}" "${resultsDir}"
-rsync -rv "${qualControlledDir}" "${resultsDir}"
+mv "${cnvDir}" "${resultsDir}"
+mv "${imputationOutputDir}" "${resultsDir}"
+mv "${qualControlledDir}" "${resultsDir}"
