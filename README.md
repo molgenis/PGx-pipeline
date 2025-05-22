@@ -15,9 +15,9 @@ Preprocessing steps:
 perl -pi -e 's|Project|originalProject|' 2025_Apr_batch1_plusGDIO.csv
 awk '{if (NR>1){print $0",2025_Apr_batch2_plusGDIO"}else{print $0",project"}}' 2025_Apr_batch1_plusGDIO.csv > 2025_Apr_batch1_plusGDIO.csv.tmp
 ```
-after checking if correct 
+after checking if correct, move the file to final location:
 ```
-2025_Apr_batch1_plusGDIO.csv.tmp /groups/umcg-pgx/tmp07/Samplesheets/2025_Apr_batch1_plusGDIO.csv
+mv 2025_Apr_batch1_plusGDIO.csv.tmp /groups/umcg-pgx/tmp07/Samplesheets/2025_Apr_batch1_plusGDIO.csv
 ```
 
 example: 
