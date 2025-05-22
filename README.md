@@ -9,9 +9,16 @@ Preprocessing steps:
 5. create new folder in ```/groups/umcg-pgx/tmp07/rawdata/hematologie_research_data``` with GDIO data aswell (e.g. 2025_Apr_batch1_plusGDIO)
 6. go in the 2025_Apr_batch1_plusGDIO folder and do following command: ```ln -s ../2025_Apr_batch1/* .```
 7. still in GTC folder run this command: ```ln -s ../../GDIO/GTC/* .```
-8. combine samplesheets of GDIO (```/groups/umcg-pgx/tmp07/rawdata/GDIO/GDIO.csv```), with the analysing samples samplesheet, be aware of mismatching columns
-9. rename Project in samplesheet to originalProject and add last column with headername 'project' and fill in the name of the new project (2025_Apr_batch1_plusGDIO)
-10. copy samplesheet to /groups/umcg-pgx/tmp07/Samplesheets/
+8. combine samplesheets of GDIO (```/groups/umcg-pgx/tmp07/rawdata/GDIO/GDIO.csv```), with the analysing samples samplesheet, **be aware of mismatching columns!**, call it 2025_Apr_batch1_plusGDIO.csv
+10. rename **Project** in samplesheet to **originalProject** and add last column with headername **project** and fill in the name of the new project (2025_Apr_batch1_plusGDIO) this can be done via
+```
+perl -pi -e 's|Project|originalProject|' 2025_Apr_batch1_plusGDIO.csv
+awk '{if (NR>1){print $0",2025_Apr_batch2_plusGDIO"}else{print $0",project"}}' 2025_Apr_batch1_plusGDIO.csv > 2025_Apr_batch1_plusGDIO.csv.tmp
+```
+after checking if correct 
+```
+2025_Apr_batch1_plusGDIO.csv.tmp /groups/umcg-pgx/tmp07/Samplesheets/2025_Apr_batch1_plusGDIO.csv
+```
 
 example: 
 ```
