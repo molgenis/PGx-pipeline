@@ -51,7 +51,7 @@ if( !(workflow.runName ==~ /[a-z]+_[a-z]+/) ){
 Channel
     .fromPath(params.samplesheet)
     .splitCsv(header: true, sep: ',')
-    .filter { sample -> sample.pipeline == "diagnostics" }
+    .filter { sample -> sample.analysis == "diagnostics" }
     .map { sample -> sample.Sample_ID }
     .collectFile(name: 'target_samples.txt', newLine: true).collect().view()
     .set { target_samples_ch }
