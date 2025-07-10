@@ -38,6 +38,7 @@ rawdata="${tmpdir}/rawdata/hematologie_research_data"
 if [[ ! -f "${samplesheetFolder}/${projectName}.csv" ]]
 then
   echo "samplesheet should be here: ${samplesheetFolder}/${projectName}.csv "
+	exit 1
 fi
 
 
@@ -45,12 +46,16 @@ mkdir -p "${rawdata}/${projectName}"
 cd "${rawdata}/${projectName}"
 
 echo "step1: make symlinks for new data"
-for glaasje in ${glaasjes}
+ 
+IFS=',' read -r -a array <<< "$glaasjes"
+for glaasje in "${glaasjes[@]}"
 do
+	echo "I am here: ${rawdata}/${projectName}"
+	echo "symlinking: /groups/umcg-pgx/tmp07/rawdata/gtc/${glaasje}"
   ln -sf "/groups/umcg-pgx/tmp07/rawdata/gtc/${glaasje}" 
 done
 
-projectNameGDIO="${projectName}_GDIO"
+projectNameGDIO="${projectName}_plusGDIO"
 samplesheet="${samplesheetFolder}/${projectNameGDIO}.csv"
 
 mkdir -p "${rawdata}/${projectNameGDIO}"
@@ -83,6 +88,6 @@ cd "${generatedScripts}/"
 bash generate_template.sh
 
 cd "${tmpdir}/projects/${projectNameGDIO}/jobs"
-echo "bash submit.sh!!"
+
 bash submit.sh
 
