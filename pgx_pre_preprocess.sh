@@ -63,11 +63,10 @@ if [[ -n "${_sampleSheetColumnOffsets['SentrixPosition_A']+isset}" ]]; then
   SentrixPositionAFieldIndex=$((${_sampleSheetColumnOffsets['SentrixPosition_A']} + 1))
 fi
 
-
 count=0
 while read line
 do
-	if [[ ${count} == 0 ]]
+	if [[ "${count}" == 0 ]]
 	then
 		count=1
 	else
@@ -87,8 +86,8 @@ mkdir -p "${rawdata}/${projectNameGDIO}"
 cd "${rawdata}/${projectNameGDIO}"
 echo "step1: make symlinks for new data + GDIO"
 
-ln -sf ../"${projectName}"/* .
-ln -sf ../../GDIO/GTC/* .
+ln -sf "../${projectName}"/* .
+ln -sf "../../GDIO/GTC/"* .
 
 cd "${samplesheetFolder}"
 cat "${samplesheetFolder}/${projectName}.csv" "${tmpdir}/rawdata/GDIO/GDIO.csv" > "${samplesheet}"
