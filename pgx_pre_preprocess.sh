@@ -21,14 +21,13 @@ EOH
 }
 
 
-while getopts "p:g:h" opt; 
+while getopts "p:h" opt; 
 do
 	case "${opt}" in h)showHelp;; p)projectName="${OPTARG}";; g)glaasjes="${OPTARG}";; 
 esac 
 done
 
 if [[ -z "${projectName:-}" ]]; then showHelp ; echo "projectName is not specified" ; fi ; echo "projectName=${projectName}"
-if [[ -z "${glaasjes:-}" ]]; then showHelp ; echo "glaasjes is not specified" ; fi ; echo "glaasjes=${glaasjes}"
 
 tmpdir="/groups/umcg-pgx/tmp07/"
 samplesheetFolder="${tmpdir}/Samplesheets/"
@@ -37,7 +36,7 @@ rawdata="${tmpdir}/rawdata/hematologie_research_data"
 
 if [[ ! -f "${samplesheetFolder}/${projectName}.csv" ]]
 then
-  echo "samplesheet should be here: ${samplesheetFolder}/${projectName}.csv "
+  echo "samplesheet should be here: ${samplesheetFolder}/${projectName}.csv"
 	exit 1
 fi
 
@@ -46,14 +45,40 @@ mkdir -p "${rawdata}/${projectName}"
 cd "${rawdata}/${projectName}"
 
 echo "step1: make symlinks for new data"
- 
-IFS=',' read -r -a array <<< "$glaasjes"
-for glaasje in "${glaasjes[@]}"
+
+declare -a _sampleSheetColumnNames=()
+declare -A _sampleSheetColumnOffsets=()
+
+IFS="," read -r -a _sampleSheetColumnNames <<< "$(head -1 ${samplesheetFolder}/${projectName}.csv)"
+
+for (( _offset = 0 ; _offset < ${#_sampleSheetColumnNames[@]} ; _offset++ ))
 do
-	echo "I am here: ${rawdata}/${projectName}"
-	echo "symlinking: /groups/umcg-pgx/tmp07/rawdata/gtc/${glaasje}"
-  ln -sf "/groups/umcg-pgx/tmp07/rawdata/gtc/${glaasje}" 
+	_sampleSheetColumnOffsets["${_sampleSheetColumnNames[${_offset}]}"]="${_offset}"
 done
+ 
+if [[ -n "${_sampleSheetColumnOffsets['SentrixBarcode_A']+isset}" ]]; then
+  sentrixBarcodeAFieldIndex=$((${_sampleSheetColumnOffsets['SentrixBarcode_A']} + 1))
+fi 
+if [[ -n "${_sampleSheetColumnOffsets['SentrixPosition_A']+isset}" ]]; then
+  SentrixPositionAFieldIndex=$((${_sampleSheetColumnOffsets['SentrixPosition_A']} + 1))
+fi
+
+
+count=0
+while read line
+do
+	if [[ ${count} == 0 ]]
+	then
+		count=1
+	else
+
+		gtcFile=$(echo "${line}" | awk -v sb="${sentrixBarcodeAFieldIndex}" -v sp="${SentrixPositionAFieldIndex}" 'BEGIN {FS=","}{print $sb"_"$sp".gtc"}')
+		glaasje=$(echo "${line}" | awk -v sb="${sentrixBarcodeAFieldIndex}" 'BEGIN {FS=","}{print $sb}')
+		mkdir -p "${rawdata}/${projectName}/${glaasje}"
+		rsync -v "/groups/umcg-pgx/tmp07/rawdata/gtc/${glaasje}/${gtcFile}" "${rawdata}/${projectName}/${glaasje}/"
+	fi
+		
+done<"${samplesheetFolder}/${projectName}.csv"
 
 projectNameGDIO="${projectName}_plusGDIO"
 samplesheet="${samplesheetFolder}/${projectNameGDIO}.csv"
