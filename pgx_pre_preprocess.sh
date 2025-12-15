@@ -110,10 +110,10 @@ do
 
 	path_to_gtc_folder="${rawdata}/${projectName}/${glaasje}/"
 	
-	bcftools +gtc2vcf -g "${path_to_gtc_folder}" -b "${bpm_manifest_file}" -f "${ref}"  |\
-	bcftools reheader --samples "${glaasje}_samples.txt" |\
+	bcftools +gtc2vcf -g "${path_to_gtc_folder}" -b "${bpm_manifest_file}" -f "${ref}"  | \
+	bcftools reheader --samples "${glaasje}_samples.txt" | \
 	bcftools sort -Ou -T ./bcftools. | \
-	bcftools norm --no-version -oB "${out_prefix}/${glaasje}_first_output.bcf" -c x -f "${ref}"
+	bcftools norm --no-version -o "${out_prefix}/${glaasje}_first_output.bcf" -Ob -c x -f "${ref}"
 
 	echo "${glaasje} done"
 
@@ -128,8 +128,8 @@ done<'uniqglaasjes.txt'
 # bgzip + index
 for i in $(ls "${out_prefix}/"*'.vcf')
 do
-	bgzip "${i}"
-	tabix -p "vcf ${i}.gz"
+	bgzip -f "${i}"
+	tabix -f -p vcf "${i}.gz"
 done
 
 projectNameGDIO="${projectName}_plusGDIO"
@@ -155,6 +155,8 @@ mv "${samplesheet}.tmp" "${samplesheet}"
 echo "generating scripts"
 
 generatedScripts="${tmpdir}/generatedscripts/${projectNameGDIO}/"
+
+module purge
 
 mkdir -p "${generatedScripts}"
 module load PGx
