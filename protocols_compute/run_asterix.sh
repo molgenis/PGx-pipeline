@@ -13,6 +13,7 @@
 #string translationTableSnpToHaploDir
 #string translationTableHaploToCiDir
 #string asterixDefaultJson
+#string gtcDataDir
 
 set -e
 set -u
@@ -51,3 +52,4 @@ qualControlledDir=$(dirname "${sampleListPrefix}")
 mv "${cnvDir}" "${resultsDir}"
 mv "${imputationOutputDir}" "${resultsDir}"
 mv "${qualControlledDir}" "${resultsDir}"
+rsync -rv "${gtcDataDir}/results/vcf" "${resultsDir}"
