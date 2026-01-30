@@ -10,7 +10,8 @@ Farmacogenetics pipeline
 3. copy gtc data to wingedhelix: ```/groups/umcg-pgx/tmp07/rawdata/gtc/``` **NB! There can be multiple 'glaasjes'**
 4. ```module load PGX```
 5. copy samplesheet to ```/groups/umcg-pgx/tmp07/Samplesheets/```
-6. run pgx_pre_process.sh; change PROJECTNAME
+6. dos2unix SAMPLESHEET
+7. run pgx_pre_process.sh; change PROJECTNAME
 
 ```bash ${EBROOTPGX}/pgx_pre_preprocess.sh -p {PROJECTNAME}``
 
