@@ -3,28 +3,35 @@
 #string pythonVersion
 #string pythonEnvironment
 #string bpmFile
-#string pipelineRoot
-#string arrayFinalReport
-#string arrayStagedIntensities
+#string finalReport
+#string stagedIntensitiesDir
+#string stagedIntensities
 #string samplesheet
+#string sampleListPrefix
+#string correctiveVariantsOutputDir
 #string SentrixBarcode_A
+#string asterixVersion
+#string project
+#string logsDir
+#string intermediateDir
 
 set -e
 set -u
 
 module load "${pythonVersion}"
+module load "${asterixVersion}"
 module list
 
-source ${pythonEnvironment}/bin/activate
+source "${pythonEnvironment}/bin/activate"
 
-mkdir -p ${stagedIntensities}
+mkdir -p "${stagedIntensitiesDir}"
 
-rm -f "${arrayStagedIntensities}"
+rm -f "${stagedIntensities}"
 
-python ${asterixRoot}/src/main/python/cnvcaller/core.py data \
+python "${EBROOTASTERIX}/src/main/python/cnvcaller/core.py" data \
   --bead-pool-manifest "${bpmFile}" \
   --sample-list "${sampleListPrefix}.samples.txt" \
   --variants-prefix "${correctiveVariantsOutputDir}" \
-  --final-report-file-path ${arrayFinalReport} \
-  --out "${arrayStagedIntensities}" \
-  --config ${asterixRoot}/src/main/python/cnvcaller/conf/config.yml
+  --final-report-file-path "${finalReport}" \
+  --out "${stagedIntensities}" \
+  --config "${EBROOTASTERIX}/src/main/python/cnvcaller/conf/config.yml"

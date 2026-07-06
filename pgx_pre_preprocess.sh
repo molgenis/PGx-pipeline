@@ -12,7 +12,7 @@ Usage:
 Options:
 	-h   Show this help.
 	-p   projectName
-	-g   glaasje (space seperated if there are multiple) NOTE: provide this argument last
+	-k   skip vcf creation true/false (default=false)
 
 ===============================================================================================================
 EOH
@@ -21,16 +21,19 @@ EOH
 }
 
 
-while getopts "p:h" opt; 
+while getopts "p:k:h" opt; 
 do
-	case "${opt}" in h)showHelp;; p)projectName="${OPTARG}";; g)glaasjes="${OPTARG}";; 
+	case "${opt}" in h)showHelp;; p)projectName="${OPTARG}";; k)skipVCF="${OPTARG}";;
 esac 
 done
 
 if [[ -z "${projectName:-}" ]]; then showHelp ; echo "projectName is not specified" ; fi ; echo "projectName=${projectName}"
 
+if [[ -z "${skipVCF:-}" ]]; then skipVCF="false" ; fi 
+echo "skipVCF=${skipVCF}"
+
 tmpdir="/groups/umcg-pgx/tmp07/"
-samplesheetFolder="${tmpdir}/Samplesheets/"
+samplesheetFolder="${tmpdir}/Samplesheets/PGx/"
 rawdata="${tmpdir}/rawdata/hematologie_research_data"
 
 
@@ -108,34 +111,39 @@ out_prefix="${rawdata}/${projectNameGDIO}/results/vcf/"
 ref="/apps/data/1000G/phase1/human_g1k_v37_phiX.fasta"
 bpm_manifest_file="/apps/data/GSAarray/GSAMD-24v3-0-EA_20034606_A1.bpm"
 
-# gtc to vcf	
-while read glaasje
-do
-	echo "processing ${glaasje}.."
+if [[ ${skipVCF} == "true" ]]
+then
+	echo "vcf creation can be skipped"
+else
+	# gtc to vcf	
+	while read glaasje
+	do
+		echo "processing ${glaasje}.."
 
-	path_to_gtc_folder="${rawdata}/${projectName}/${glaasje}/"
+		path_to_gtc_folder="${rawdata}/${projectName}/${glaasje}/"
 	
-	bcftools +gtc2vcf -g "${path_to_gtc_folder}" -b "${bpm_manifest_file}" -f "${ref}"  | \
-	bcftools reheader --samples "${glaasje}_samples.txt" | \
-	bcftools sort -Ou -T ./bcftools. | \
-	bcftools norm --no-version -o "${out_prefix}/${glaasje}_first_output.bcf" -Ob -c x -f "${ref}"
+		bcftools +gtc2vcf -g "${path_to_gtc_folder}" -b "${bpm_manifest_file}" -f "${ref}"  | \
+		bcftools reheader --samples "${glaasje}_samples.txt" | \
+		bcftools sort -Ou -T ./bcftools. | \
+		bcftools norm --no-version -o "${out_prefix}/${glaasje}_first_output.bcf" -Ob -c x -f "${ref}"
 
-	echo "${glaasje} done"
+		echo "${glaasje} done"
 
-done<'uniqglaasjes.txt'
+	done<'uniqglaasjes.txt'
 
-# split vcf per sample
-while read glaasje
-do
-	bcftools +split "${out_prefix}/${glaasje}_first_output.bcf" -o "${out_prefix}"
-done<'uniqglaasjes.txt'
+	# split vcf per sample
+	while read glaasje
+	do
+		bcftools +split "${out_prefix}/${glaasje}_first_output.bcf" -o "${out_prefix}"
+	done<'uniqglaasjes.txt'
 
-# bgzip + index
-for i in $(ls "${out_prefix}/"*'.vcf')
-do
-	bgzip -f "${i}"
-	tabix -f -p vcf "${i}.gz"
-done
+	# bgzip + index
+	for i in $(ls "${out_prefix}/"*'.vcf')
+	do
+		bgzip -f "${i}"
+		tabix -f -p vcf "${i}.gz"
+	done
+fi
 
 projectNameGDIO="${projectName}_plusGDIO"
 samplesheet="${samplesheetFolder}/${projectNameGDIO}.csv"
@@ -159,7 +167,7 @@ pwd
 mv "${samplesheet}.tmp" "${samplesheet}"
 echo "generating scripts"
 
-generatedScripts="${tmpdir}/generatedscripts/${projectNameGDIO}/"
+generatedScripts="${tmpdir}/generatedscripts/PGx/${projectNameGDIO}/"
 
 module purge
 
@@ -171,7 +179,7 @@ cp "${samplesheetFolder}/${projectNameGDIO}.csv" "${generatedScripts}/"
 cd "${generatedScripts}/"
 bash generate_template.sh
 
-cd "${tmpdir}/projects/${projectNameGDIO}/jobs"
+cd "${tmpdir}/projects/PGx/${projectNameGDIO}/jobs"
 
 bash submit.sh
 

@@ -13,16 +13,6 @@ set -e
 set -u
 
 ENVIRONMENT_DIR='.'
-<#noparse>
-WHOAMI=$(whoami)
-if [[ -f "/home/${WHOAMI}/molgenis.cfg" && -r "/home/${WHOAMI}/molgenis.cfg" ]]
-then
-	source /home/${WHOAMI}/molgenis.cfg
-else
-	printf '%s\n' "FATAL: cannot find or cannot access /home/${WHOAMI}/molgenis.cfg"
-	exit 1
-fi
-</#noparse>
 #
 # Variables declared in MOLGENIS Compute headers/footers always start with a MC_ prefix.
 #
@@ -76,18 +66,6 @@ function errorExitAndCleanUp() {
 	echo "${errorMessage}"
 	echo "${MC_doubleSeperatorLine}"                > ${MC_failedFile}
 	echo "${errorMessage}"                         >> ${MC_failedFile}
-	if CURLRESPONSE="$(curl -s -S -H "Content-Type: application/json" -X POST -d "{"username"="${USERNAME}", "password"="${PASSWORD}"}" https://${MOLGENISSERVER}/api/v1/login 2>&1)"
-	then
-		TOKEN=$(echo "${CURLRESPONSE}" | awk 'BEGIN {FS=":"} $1 ~ /token/ {print $2}' | awk 'BEGIN {FS="\""}{print $2}')
-		if CURLRESPONSE="$(curl -s -S -H "Content-Type:application/json" -H "x-molgenis-token:${TOKEN}" -X PUT -d "Error" "https://${MOLGENISSERVER}/api/v1/status_jobs/${MC_project}_${MC_jobName}/status" 2>&1)"
-		then
-			echo "INFO: T&T set status to 'Error'."
-		else
-			echo "ERROR: ${CURLRESPONSE:-unknown error}."
-		fi
-	else
-		echo "ERROR: ${CURLRESPONSE:-unknown error}."
-	fi
 
 	if [ -f "${MC_jobScriptSTDERR}" ]; then
 		echo "${MC_singleSeperatorLine}"           >> ${MC_failedFile}
@@ -150,20 +128,7 @@ trap 'errorExitAndCleanUp EXIT NA $?' EXIT
 trap 'errorExitAndCleanUp ERR  $LINENO $?' ERR
 
 touch ${MC_jobScript}.started
-if CURLRESPONSE="$(curl -s -S -H "Content-Type: application/json" -X POST -d "{"username"="${USERNAME}", "password"="${PASSWORD}"}" "https://${MOLGENISSERVER}/api/v1/login" 2>&1)"
-then
-	TOKEN=$(echo "${CURLRESPONSE}" | awk 'BEGIN {FS=":"} $1 ~ /token/ {print $2}' | awk 'BEGIN {FS="\""}{print $2}')
-	echo "INFO: login to T&T server ${MOLGENISSERVER} successful and retrieved token"
 
-		if CURLRESPONSE="$(curl -s -S -H "Content-Type:application/json" -H "x-molgenis-token:${TOKEN}" -X PUT -d "'${mydate_start}'" https://${MOLGENISSERVER}/api/v1/status_jobs/${MC_project}_${MC_jobName}/started_date 2>&1)"
-		then
-			echo "INFO: T&T set finished date to '${mydate_start}'."
-		else
-			echo "ERROR: ${CURLRESPONSE:-unknown error}."
-		fi
-else
-	echo "ERROR: ${CURLRESPONSE:-unknown error}."
-fi
 #
 # When dealing with timing / synchronization issues of large parallel file systems,
 # you can uncomment the sleep statement below to allow for flushing of IO buffers/caches.

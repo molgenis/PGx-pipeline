@@ -36,9 +36,10 @@ outputName,genimpute_phased_imputed
 imputationFlankSize,1000000
 cnvBatchCorrectionPath,${pgxDataDir}/analyses/cyp2d6_cnv_calling/20240730/out
 tmpDataDir,${groupDir}/${tmpName}/
-projectDir,${tmpDataDir}/projects/${project}/
+projectDir,${tmpDataDir}/projects/PGx/${project}/
+logsDir,${tmpDataDir}/logs/${project}/
 projectJobsDir,${projectDir}/jobs/
-intermediateDir,${tmpDataDir}/tmp/${project}/
+intermediateDir,${tmpDataDir}/tmp/PGx/${project}/
 rawdataPath,${tmpDataDir}/rawdata/
 outdir,${intermediateDir}/analyses/
 resultsDir,${projectDir}/results/

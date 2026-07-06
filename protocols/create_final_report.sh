@@ -4,27 +4,32 @@
 #string pythonEnvironment
 #string bpmFile
 #string gtcDataDir
-#string pipelineRoot
-#string arrayFinalReport
+#string pgxVersion
+#string finalReportTxt
 #string samplesheet
 #string SentrixBarcode_A
+#string finalReportsDir
+#string project
+#string logsDir
+#string intermediateDir
 
 set -e
 set -u
 
 module load "${pythonVersion}"
+module load "${pgxVersion}"
 module list
 
-source ${pythonEnvironment}/bin/activate
+source "${pythonEnvironment}/bin/activate"
 
-mkdir -p ${finalReportsDir}
+mkdir -p "${finalReportsDir}"
 
-rm -f "${arrayFinalReport}"
+rm -f "${finalReportTxt}"
 
-python ${pipelineRoot}/scripts/gtc_final_report.py \
+python "${EBROOTPGX}/scripts/gtc_final_report.py" \
 --manifest "${bpmFile}" \
 --samplesheet "${samplesheet}" \
 --gtc_directory "${gtcDataDir}/${SentrixBarcode_A}/" \
---output_file "${arrayFinalReport}"
+--output_file "${finalReportTxt}"
 
-gzip -f "${arrayFinalReport}"
+gzip -f "${finalReportTxt}"
