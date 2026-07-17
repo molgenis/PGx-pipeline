@@ -26,7 +26,7 @@ declare MC_project="${project}"
 # File to indicate failure of a complete workflow in
 # a central location for log files for all projects.
 #
-logsDirectory="${logsDir}/${project}/"
+logsDirectory="${logsDir}/"
 mydate_start=$(date +"%Y-%m-%dT%H:%M:%S+0200")
 export mydate_start
 #

@@ -18,9 +18,11 @@ set -u
 
 cnvDir=$(dirname "${cnvOutDir}")
 qualControlledDir=$(dirname "${sampleListPrefix}")
-mv "${cnvDir}" "${resultsDir}"
-mv "${imputationOutputDir}" "${resultsDir}"
-mv "${qualControlledDir}" "${resultsDir}"
+
+chmod 755 -R ${imputationOutputDir}/*
+rsync -rv "${cnvDir%/}" "${resultsDir}"
+rsync -rv "${imputationOutputDir%/}" "${resultsDir}"
+rsync -rv "${qualControlledDir%/}" "${resultsDir}"
 
 mkdir -p "${resultsDir}/vcf/"
 
@@ -30,7 +32,7 @@ do
 done
 
 #
-## Split research samples from FGP samples
+## Split research samples from FGP samples  
 #
 module load PLINK/1.9-beta6-20190617
 oxfordFolder="${intermediateDir}/results/oxford_gen_sample"
@@ -77,5 +79,7 @@ chmod g+w "${projectDir}"
 rsync -rv "${projectDir}" "tunnel+nibbler:/groups/umcg-pgx/tmp02/projects/"
 
 echo "creating ${tmpDataDir}/logs/${project}/run01.pipeline.finished"
+rm -f "${tmpDataDir}/logs/${project}/run01.pipeline.started"
+rm -f "${tmpDataDir}/logs/${project}/run01.pipeline.failed"
 touch "${tmpDataDir}/logs/${project}/run01.pipeline.finished"
 
