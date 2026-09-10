@@ -9,7 +9,7 @@
 #string sampleListPrefix
 #string concatenatedGenotypesOutputDir
 #string samplesheet
-
+#string rLibsPath
 
 set -e
 set -u
@@ -17,7 +17,7 @@ set -u
 module load "${pgxVersion}"
 module load "${plink2Version}"
 module load "${rVersion}"
-#export R_LIBS_USER=${rLibsPath}
+export R_LIBS_USER="${rLibsPath}"
 
 sampleListPrefixFolder=$(dirname "${sampleListPrefix}")
 mkdir -p $(dirname "${sampleListPrefix}")

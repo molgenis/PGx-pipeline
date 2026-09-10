@@ -15,6 +15,7 @@
 #string project
 #string logsDir
 #string intermediateDir
+#string beadArrayVersion
 
 set -e
 set -u
@@ -36,6 +37,7 @@ array_contains () {
 # Now load the python version and activate the python environment
 # to perform cnv calling
 module load "${pythonVersion}"
+module load "${beadArrayVersion}"
 module load "${asterixVersion}"
 module load "${pgxVersion}"
 module list

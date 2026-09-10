@@ -59,7 +59,6 @@ if [[ -z "${project:-}" ]]; then project=$(basename $(pwd )) ; fi ; echo "projec
 genScripts="${groupDir}/${tmpDirectory}/generatedscripts/PGx/${project}/"
 samplesheet="${genScripts}/${project}.csv"
 
-mkdir -p "${groupDir}/${tmpDirectory}/projects/PGx/${project}/jobs"
 mkdir -p "${groupDir}/${tmpDirectory}/tmp/PGx/${project}/"
 mkdir -p "${groupDir}/${tmpDirectory}/logs/${project}"
 
@@ -70,8 +69,6 @@ perl "${EBROOTPGX}/scripts/convertParametersGitToMolgenis.pl" "${EBROOTPGX}/para
 perl "${EBROOTPGX}/scripts/convertParametersGitToMolgenis.pl" "${EBROOTPGX}/${environmentParameters}.csv" > "${genScripts}/parameters_environment_converted.csv"
 
 pgxversion=$(module list | grep -o -P 'PGx(.+)');
-
-module load Molgenis-Compute
 
 bash "${EBROOTMOLGENISMINCOMPUTE}/molgenis_compute.sh" \
 -p "parameters_converted.csv" \
@@ -96,7 +93,7 @@ groupDir=${groupDir}" \
 
 cd "${groupDir}/${tmpDirectory}/projects/PGx/${project}/run01/"
 ## additional removing duplicate values in scripts 
-ml Perl
+ml Perl/5.34.1-GCCcore-11.3.0
 perl "${EBROOTPGX}/scripts/RemoveDuplicatesCompute.pl" 'jobs/'*.sh
 rm -f 'jobs/'*bak*
 

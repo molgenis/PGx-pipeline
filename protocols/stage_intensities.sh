@@ -14,11 +14,13 @@
 #string project
 #string logsDir
 #string intermediateDir
+#string beadArrayVersion
 
 set -e
 set -u
 
 module load "${pythonVersion}"
+module load "${beadArrayVersion}"
 module load "${asterixVersion}"
 module list
 

@@ -42,44 +42,44 @@ oxfordFolder="${intermediateDir}/results/oxford_gen_sample"
 sampleReadFile="${oxfordFolder}/chr_1.sample"
 
 count=0
-while read line
-do
-	if [[ ${count} -gt 1 ]]
-	then
-		
-		identifier=$(echo "${line}" | awk 'BEGIN {FS=" "}{print $1}')
-		
-		if [[ "${identifier}" == *"FGP"* ]]
-		then
-			
-			echo -e "${identifier} ${identifier}" >> "${oxfordFolder}/keep_FGP.txt"
-		elif [[ "${identifier}" != *"GDIO"* ]]
-		then
-			echo -e "${identifier} ${identifier}" >> "${oxfordFolder}/keep_non_FGP.txt"
-		fi
-	else
-		count=$((${count}+1))
-	fi
-done<"${sampleReadFile}"
-
-
-
-mkdir -p "${oxfordFolder}/out"
-for i in "${oxfordFolder}/"*".gen"
-do
-	outputFilename="$(basename ${i})"
-	outputname=${outputFilename%.*}
-	dataname=${i%.*}
-
-	plink --data "${dataname}" \
-	--keep "${oxfordFolder}/keep_non_FGP.txt" \
-	--allow-no-sex \
-	--make-bed  \
-	--out "${oxfordFolder}/out/${outputname}"
-done
+# while read line
+# do
+# 	if [[ ${count} -gt 1 ]]
+# 	then
+#
+# 		identifier=$(echo "${line}" | awk 'BEGIN {FS=" "}{print $1}')
+#
+# 		if [[ "${identifier}" == *"FGP"* ]]
+# 		then
+#
+# 			echo -e "${identifier} ${identifier}" >> "${oxfordFolder}/keep_FGP.txt"
+# 		elif [[ "${identifier}" != *"GDIO"* ]]
+# 		then
+# 			echo -e "${identifier} ${identifier}" >> "${oxfordFolder}/keep_non_FGP.txt"
+# 		fi
+# 	else
+# 		count=$((${count}+1))
+# 	fi
+# done<"${sampleReadFile}"
+#
+#
+#
+# mkdir -p "${oxfordFolder}/out"
+# for i in "${oxfordFolder}/"*".gen"
+# do
+# 	outputFilename="$(basename ${i})"
+# 	outputname=${outputFilename%.*}
+# 	dataname=${i%.*}
+#
+# 	plink --data "${dataname}" \
+# 	--keep "${oxfordFolder}/keep_non_FGP.txt" \
+# 	--allow-no-sex \
+# 	--make-bed  \
+# 	--out "${oxfordFolder}/out/${outputname}"
+# done
 
 chmod g+w "${projectDir}"
-rsync -rv "${projectDir%/}" "tunnel+nibbler:/groups/umcg-pgx/tmp02/projects/"
+#rsync -rv "${projectDir%/}" "tunnel+nibbler:/groups/umcg-pgx/tmp02/projects/"
 
 echo "creating ${tmpDataDir}/logs/${project}/run01.pipeline.finished"
 rm -f "${tmpDataDir}/logs/${project}/run01.pipeline.started"

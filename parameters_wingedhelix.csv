@@ -1,4 +1,2 @@
-root,/
-appsDir,${root}/apps/
-toolChain_max,foss-2022a
-toolChain_min,GCCcore-11.3.0
+pythonEnvironment,/groups/umcg-pgx/tmp07/pythonVirtualEnv/
+pythonVersion,Python/3.9.1-GCCcore-11.3.0-bare
