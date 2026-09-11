@@ -59,7 +59,6 @@ if [[ -z "${project:-}" ]]; then project=$(basename $(pwd )) ; fi ; echo "projec
 genScripts="${groupDir}/${tmpDirectory}/generatedscripts/PGx/${project}/"
 samplesheet="${genScripts}/${project}.csv"
 
-mkdir -p "${groupDir}/${tmpDirectory}/projects/PGx/${project}/jobs"
 mkdir -p "${groupDir}/${tmpDirectory}/tmp/PGx/${project}/"
 mkdir -p "${groupDir}/${tmpDirectory}/logs/${project}"
 
@@ -71,8 +70,6 @@ perl "${EBROOTPGX}/scripts/convertParametersGitToMolgenis.pl" "${EBROOTPGX}/${en
 
 pgxversion=$(module list | grep -o -P 'PGx(.+)');
 
-module load Molgenis-Compute
-
 bash "${EBROOTMOLGENISMINCOMPUTE}/molgenis_compute.sh" \
 -p "parameters_converted.csv" \
 -p "${genScripts}/parameters_environment_converted.csv" \
@@ -80,7 +77,7 @@ bash "${EBROOTMOLGENISMINCOMPUTE}/molgenis_compute.sh" \
 -p "${genScripts}/${project}.csv" \
 -p "${EBROOTPGX}/chromosome_list.csv" \
 -w "${EBROOTPGX}/workflow_pgx.csv" \
--rundir "${groupDir}/${tmpDirectory}/projects/PGx/${project}/jobs/" \
+-rundir "${groupDir}/${tmpDirectory}/projects/PGx/${project}/run01/jobs/" \
 --header "${EBROOTPGX}/templates/slurm/header_tnt.ftl" \
 --footer "${EBROOTPGX}/templates/slurm/footer_tnt.ftl" \
 --submit "${EBROOTPGX}/templates/slurm/submit.ftl" \
@@ -94,12 +91,12 @@ groupDir=${groupDir}" \
 -g \
 -weave
 
-cd "${groupDir}/${tmpDirectory}/projects/PGx/${project}/"
+cd "${groupDir}/${tmpDirectory}/projects/PGx/${project}/run01/"
 ## additional removing duplicate values in scripts 
-ml Perl
+ml Perl/5.34.1-GCCcore-11.3.0
 perl "${EBROOTPGX}/scripts/RemoveDuplicatesCompute.pl" 'jobs/'*.sh
 rm -f 'jobs/'*bak*
 
 cd -
 touch "${groupDir}/${tmpDirectory}/logs/${project}/run01.pipeline.started"
-echo "jobs can be found here: ${groupDir}/${tmpDirectory}/projects/PGx/${project}/jobs"
+echo "jobs can be found here: ${groupDir}/${tmpDirectory}/projects/PGx/${project}/run01/jobs"

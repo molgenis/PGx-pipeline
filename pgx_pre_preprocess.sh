@@ -20,6 +20,9 @@ EOH
 	exit 0
 }
 
+cluster="$(hostname)"
+
+source "${EBROOTPGX}/env_${cluster}.csv"
 
 while getopts "p:k:h" opt; 
 do
@@ -32,10 +35,9 @@ if [[ -z "${projectName:-}" ]]; then showHelp ; echo "projectName is not specifi
 if [[ -z "${skipVCF:-}" ]]; then skipVCF="false" ; fi 
 echo "skipVCF=${skipVCF}"
 
-tmpdir="/groups/umcg-pgx/tmp07/"
+tmpdir="/groups/umcg-pgx/${TMP_LFS}"
 samplesheetFolder="${tmpdir}/Samplesheets/PGx/"
 rawdata="${tmpdir}/rawdata/hematologie_research_data"
-
 
 if [[ ! -f "${samplesheetFolder}/${projectName}.csv" ]]
 then
@@ -76,7 +78,6 @@ if [[ -n "${_sampleSheetColumnOffsets['Sample_ID']+isset}" ]]; then
 fi
 
 
-module load gtc2vcf
 count=0
 
 projectNameGDIO="${projectName}_plusGDIO"
@@ -98,7 +99,7 @@ do
 		glaasje=$(echo "${line}" | awk -v sb="${sentrixBarcodeAFieldIndex}" 'BEGIN {FS=","}{print $sb}')
 		sampleID=$(echo "${line}" | awk -v sid="${sampleIDFieldIndex}" 'BEGIN {FS=","}{print $sid}')
 		mkdir -p "${rawdata}/${projectName}/${glaasje}"
-		rsync -v "/groups/umcg-pgx/tmp07/rawdata/gtc/${glaasje}/${gtcFile}" "${rawdata}/${projectName}/${glaasje}/"
+		rsync -v "/groups/umcg-pgx/${TMP_LFS}/rawdata/gtc/${glaasje}/${gtcFile}" "${rawdata}/${projectName}/${glaasje}/"
 		echo "${glaasje}" >> 'glaasjes.txt'
 		echo -e "${gtcFile%.gtc} ${sampleID}" >> "${glaasje}_samples.txt"
 
@@ -115,6 +116,8 @@ if [[ ${skipVCF} == "true" ]]
 then
 	echo "vcf creation can be skipped"
 else
+	ml purge
+	module load gtc2vcf
 	# gtc to vcf	
 	while read glaasje
 	do
@@ -169,17 +172,16 @@ echo "generating scripts"
 
 generatedScripts="${tmpdir}/generatedscripts/PGx/${projectNameGDIO}/"
 
-module purge
-
 mkdir -p "${generatedScripts}"
 module load PGx
+
 cp "${EBROOTPGX}/generate_template.sh" "${generatedScripts}/"
 cp "${samplesheetFolder}/${projectNameGDIO}.csv" "${generatedScripts}/"
 
 cd "${generatedScripts}/"
 bash generate_template.sh
 
-cd "${tmpdir}/projects/PGx/${projectNameGDIO}/jobs"
+cd "${tmpdir}/projects/PGx/${projectNameGDIO}/run01/jobs"
 
-bash submit.sh
+bash submit.sh --constraint "${SCR_LFS}"
 
