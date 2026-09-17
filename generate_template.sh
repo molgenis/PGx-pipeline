@@ -12,7 +12,7 @@ module list
 
 host=$(hostname -s)
 environmentParameters="parameters_${host}"
-
+source "env_${host}.cfg"
 function showHelp() {
 	#
 	# Display commandline help on STDOUT.
@@ -93,7 +93,7 @@ groupDir=${groupDir}" \
 
 cd "${groupDir}/${tmpDirectory}/projects/PGx/${project}/run01/"
 ## additional removing duplicate values in scripts 
-ml Perl/5.34.1-GCCcore-11.3.0
+module load "${PERL_VERISON}"
 perl "${EBROOTPGX}/scripts/RemoveDuplicatesCompute.pl" 'jobs/'*.sh
 rm -f 'jobs/'*bak*
 

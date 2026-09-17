@@ -22,7 +22,7 @@ module load "${beadArrayVersion}"
 module load "${pgxVersion}"
 module list
 
-source "${pythonEnvironment}/bin/activate"
+export PYTHONPATH="${pythonEnvironment}/lib64/python3.10/site-packages/:$PYTHONPATH"
 
 mkdir -p "${finalReportsDir}"
 

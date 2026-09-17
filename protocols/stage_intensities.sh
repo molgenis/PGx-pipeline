@@ -24,8 +24,7 @@ module load "${beadArrayVersion}"
 module load "${asterixVersion}"
 module list
 
-source "${pythonEnvironment}/bin/activate"
-
+export PYTHONPATH="${pythonEnvironment}/lib64/python3.10/site-packages/:$PYTHONPATH"
 mkdir -p "${stagedIntensitiesDir}"
 
 rm -f "${stagedIntensities}"

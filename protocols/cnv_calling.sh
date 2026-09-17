@@ -52,7 +52,7 @@ done
 
 mkdir -p "${cnvOutDir}"
 
-source ${pythonEnvironment}/bin/activate
+export PYTHONPATH="${pythonEnvironment}/lib64/python3.10/site-packages/:$PYTHONPATH"
 
 python "${EBROOTASTERIX}/src/main/python/cnvcaller/core.py" call \
   --bead-pool-manifest "${bpmFile}" \

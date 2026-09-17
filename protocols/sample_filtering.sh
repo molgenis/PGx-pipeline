@@ -15,6 +15,9 @@ set -e
 set -u
 
 module load "${pgxVersion}"
+pathToPGxDir="${EBROOTPGX}"
+ml purge
+
 module load "${plink2Version}"
 module load "${rVersion}"
 export R_LIBS_USER="${rLibsPath}"
@@ -24,7 +27,7 @@ mkdir -p $(dirname "${sampleListPrefix}")
 
 plink2 --bfile "${concatenatedGenotypesOutputDir}/plink_dataset_to_qc" --out "${sampleListPrefixFolder}/plink2_sample_qc" --missing sample-only --het
 
-Rscript "${EBROOTPGX}/scripts/qc_autosomes.R" \
+Rscript "${pathToPGxDir}/scripts/qc_autosomes.R" \
 --sample-missingness "${sampleListPrefixFolder}/plink2_sample_qc.smiss" \
 --heterozygosity "${sampleListPrefixFolder}/plink2_sample_qc.het" \
 --out-prefix "${sampleListPrefixFolder}/qc_out" \

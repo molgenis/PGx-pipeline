@@ -22,8 +22,8 @@ EOH
 
 cluster="$(hostname)"
 
-source "${EBROOTPGX}/env_${cluster}.csv"
-
+source "${EBROOTPGX}/env_${cluster}.cfg"
+pgxVersion=$(module list | grep -o -P 'PGx(.+)')
 while getopts "p:k:h" opt; 
 do
 	case "${opt}" in h)showHelp;; p)projectName="${OPTARG}";; k)skipVCF="${OPTARG}";;
@@ -38,7 +38,7 @@ echo "skipVCF=${skipVCF}"
 tmpdir="/groups/umcg-pgx/${TMP_LFS}"
 samplesheetFolder="${tmpdir}/Samplesheets/PGx/"
 rawdata="${tmpdir}/rawdata/hematologie_research_data"
-
+pathToPGx="${EBROOTPGX}"
 if [[ ! -f "${samplesheetFolder}/${projectName}.csv" ]]
 then
   echo "samplesheet should be here: ${samplesheetFolder}/${projectName}.csv"
@@ -173,7 +173,8 @@ echo "generating scripts"
 generatedScripts="${tmpdir}/generatedscripts/PGx/${projectNameGDIO}/"
 
 mkdir -p "${generatedScripts}"
-module load PGx
+module purge
+module load "${pgxVersion}"
 
 cp "${EBROOTPGX}/generate_template.sh" "${generatedScripts}/"
 cp "${samplesheetFolder}/${projectNameGDIO}.csv" "${generatedScripts}/"
